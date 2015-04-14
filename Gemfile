@@ -3,7 +3,7 @@ ruby   '2.1.5'
 
 # please use "bundle install --without production" to install gems in development environment
 
-gem 'rails',                   '4.1.6'
+gem 'rails',                   '4.2.1'
 gem 'bcrypt',                  '3.1.9'
 gem 'faker',                   '1.4.2'
 gem 'carrierwave',             '0.10.0'

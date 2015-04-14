@@ -15,7 +15,6 @@
 
 # Directories #
 /build/
-/bin/
 /test_data/
 target/
 # Ignore uploaded test images.
@@ -54,7 +53,6 @@ Desktop.ini
 *.pydevproject
 .project
 .metadata
-bin/**
 tmp/**
 tmp/**/*
 *.tmp

@@ -13,4 +13,6 @@ class User < ActiveRecord::Base
   validates :password, length: { minimum: 8 }, :allow_blank => true
   has_secure_password
   
+  belongs_to :address
+  
 end

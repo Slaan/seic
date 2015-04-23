@@ -11,17 +11,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141110160344) do
+ActiveRecord::Schema.define(version: 20150423151314) do
 
-  create_table "users", force: true do |t|
+  create_table "addresses", force: :cascade do |t|
+    t.string   "street"
+    t.string   "house_number"
+    t.string   "city"
+    t.string   "state"
+    t.string   "postcode"
+    t.string   "country"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  create_table "users", force: :cascade do |t|
     t.string   "name"
     t.string   "email"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "username"
     t.string   "password_digest"
+    t.string   "first_name"
+    t.date     "birthday"
+    t.string   "details"
+    t.integer  "address_id"
   end
 
+  add_index "users", ["address_id"], name: "index_users_on_address_id"
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["username"], name: "index_users_on_username", unique: true
 

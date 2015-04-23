@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150423154233) do
+ActiveRecord::Schema.define(version: 20150423185633) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "street"
@@ -23,6 +23,17 @@ ActiveRecord::Schema.define(version: 20150423154233) do
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
+
+  create_table "group_messages", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "group_id"
+    t.string   "message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "group_messages", ["group_id"], name: "index_group_messages_on_group_id"
+  add_index "group_messages", ["user_id"], name: "index_group_messages_on_user_id"
 
   create_table "groups", force: :cascade do |t|
     t.string   "name"

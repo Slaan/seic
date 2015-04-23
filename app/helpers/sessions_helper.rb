@@ -9,6 +9,13 @@ module SessionsHelper
     @current_user ||= User.find_by(id: session[:user_id])
   end
 
+  # Redirects to login unless the user is already logged in.
+  def authenticate_user!
+    unless logged_in?
+      redirect_to login_url, :alert => "You must first log in to access this page"
+    end
+  end
+  
   # Returns true if the user is logged in, false otherwise.
   def logged_in?
     !current_user.nil?

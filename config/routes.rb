@@ -1,10 +1,13 @@
 Rails.application.routes.draw do
 
+  get 'groups/new'
+
   get 'sessions/new'
 
   get 'users/new'
 
   resources :users
+  resources :groups
   
   root 'static_pages#home'
   get 'help'    => 'static_pages#help'

@@ -17,7 +17,13 @@ class UsersController < ApplicationController
     else
       render 'new'
     end
-    debugger
+    #debugger
+  end
+
+  def join_group
+    current_user.groups << Group.find(params[:group_id])
+    current_user.save
+    redirect_to groups_path
   end
 
   private

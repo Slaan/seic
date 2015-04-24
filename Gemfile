@@ -20,6 +20,7 @@ gem 'turbolinks',              '2.3.0'
 gem 'jbuilder',                '2.2.3'
 gem 'rails-html-sanitizer',    '1.0.1'
 gem 'sdoc',                    '0.4.0', group: :doc
+gem 'search_cop',              '1.0.6'
 group :development, :test do
   gem 'sqlite3',     '1.3.10'
   gem 'pry'

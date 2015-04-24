@@ -1,7 +1,8 @@
 class UsersController < ApplicationController
 
+  before_action :set_user, only: [:update, :show, :edit]
+
   def show
-    @user = User.find(params[:id])
   end
   
   def new
@@ -20,6 +21,9 @@ class UsersController < ApplicationController
     #debugger
   end
 
+  def edit
+  end
+
   def join_group
     group = Group.find(params[:group_id])
     current_user.groups << group
@@ -28,10 +32,29 @@ class UsersController < ApplicationController
     redirect_to :back
   end
 
+  
+  def update
+    respond_to do |format|
+      if @user.update(user_params)
+        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        format.json { render :show, status: :ok, location: @user }
+      else
+        pry
+        format.html { render :show }
+        format.json { render json: @product.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
+
+      # Use callbacks to share common setup or constraints between actions.
+    def set_user
+      @user = User.find(params[:id])
+    end
 
   def user_params
     params.require(:user).permit(:username, :name, :email, :password,
-      :password_confirmation)
+      :password_confirmation, :picture)
   end
 end

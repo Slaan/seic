@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
   validates :password, length: { minimum: 8 }, :allow_blank => true
+  validate  :picture_size
   has_secure_password
 
   search_scope :search do
@@ -28,5 +29,14 @@ class User < ActiveRecord::Base
   def self.group_membership(user)
     user.groups.pluck(:id)
   end
+
+  private
+
+    # Validates the size of an uploaded picture.
+    def picture_size
+      if picture.size > 5.megabytes
+        errors.add(:picture, "should be less than 5MB")
+      end
+    end
   
 end

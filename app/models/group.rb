@@ -5,12 +5,25 @@ class Group < ActiveRecord::Base
   
   validates :name, presence: true, length: { maximum: 50 }
   validates :details, presence: true, length: { maximum: 250 }
+
+  validate  :picture_size
   
   has_and_belongs_to_many :users
   has_many :group_messages
 
   search_scope :search do
     attributes :name
+  end
+
+
+
+  private
+
+  # Validates the size of an uploaded picture.
+  def picture_size
+    if picture.size > 5.megabytes
+      errors.add(:picture, "should be less than 5MB")
+    end
   end
   
 end

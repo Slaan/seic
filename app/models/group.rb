@@ -1,5 +1,7 @@
 class Group < ActiveRecord::Base
   include SearchCop
+
+  mount_uploader :picture, PictureUploader
   
   validates :name, presence: true, length: { maximum: 50 }
   validates :details, presence: true, length: { maximum: 250 }

@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
   include SearchCop
+
+  mount_uploader :picture, PictureUploader
   
   before_save { self.email = email.downcase }
   validates :name, presence: true

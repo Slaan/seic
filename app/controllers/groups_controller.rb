@@ -4,7 +4,7 @@ class GroupsController < ApplicationController
 
   before_action :authenticate_user!
   def index
-    @group_membership = current_user.groups.map { |group| group.id }
+    @group_membership = User.group_membership(current_user)
     @groups = Group.all
   end
 end

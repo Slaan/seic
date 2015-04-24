@@ -14,6 +14,8 @@
 /spring/*.pid
 
 # Directories #
+**/uploads/
+**/tmp/
 /build/
 /test_data/
 target/

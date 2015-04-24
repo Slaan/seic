@@ -10,7 +10,7 @@
 
 		<% @groups.each do |group| %>
 			<tr>
-				<td><%= group.name %></td>
+				<td><%= link_to group.name, group_path(id: group.id) %></td>
 				<td><%= group.details %></td>
 				<% unless @group_membership.include? group.id %>
 					<td><%= link_to 'Join Group', join_group_path(group_id: group.id) %></td>

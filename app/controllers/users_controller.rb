@@ -21,9 +21,11 @@ class UsersController < ApplicationController
   end
 
   def join_group
-    current_user.groups << Group.find(params[:group_id])
+    group = Group.find(params[:group_id])
+    current_user.groups << group
     current_user.save
-    redirect_to groups_path
+    flash[:success] = "You successfully joined #{group.name}."
+    redirect_to :back
   end
 
   private

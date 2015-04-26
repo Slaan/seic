@@ -8,6 +8,9 @@ Bundler.require(*Rails.groups)
 
 module Seic
   class Application < Rails::Application
+
+    
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -19,6 +22,10 @@ module Seic
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
+
+
+    # load /lib directory and make the methods available in the whole app
+    config.autoload_paths << Rails.root.join('lib')
 
     config.active_record.raise_in_transactional_callbacks = true
   end

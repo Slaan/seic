@@ -3,7 +3,7 @@ class Group < ActiveRecord::Base
 
   mount_uploader :picture, PictureUploader
   
-  validates :name, presence: true, length: { maximum: 50 }
+  validates :name, presence: true, length: { maximum: 50 }, uniqueness: true
   validates :details, presence: true, length: { maximum: 250 }
 
   validate  :picture_size

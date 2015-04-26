@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150424141510) do
+ActiveRecord::Schema.define(version: 20150426003320) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "street"
@@ -51,13 +51,25 @@ ActiveRecord::Schema.define(version: 20150424141510) do
   add_index "groups_users", ["group_id", "user_id"], name: "index_groups_users_on_group_id_and_user_id"
   add_index "groups_users", ["user_id", "group_id"], name: "index_groups_users_on_user_id_and_group_id"
 
+  create_table "user_messages", force: :cascade do |t|
+    t.integer  "reciever_id"
+    t.integer  "sender_id"
+    t.string   "message"
+    t.string   "picture"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "user_messages", ["reciever_id"], name: "index_user_messages_on_reciever_id"
+  add_index "user_messages", ["sender_id"], name: "index_user_messages_on_sender_id"
+
   create_table "users", force: :cascade do |t|
-    t.string   "name"
-    t.string   "email"
+    t.string   "name",            limit: 255
+    t.string   "email",           limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "username"
-    t.string   "password_digest"
+    t.string   "username",        limit: 255
+    t.string   "password_digest", limit: 255
     t.string   "first_name"
     t.date     "birthday"
     t.string   "details"

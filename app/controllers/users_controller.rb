@@ -26,6 +26,10 @@ class UsersController < ApplicationController
 
   def join_group
     group = Group.find(params[:group_id])
+    members = group.users.pluck(:id)
+    UserMessageService.send_messages(current_user.name +
+                                     " ist der Gruppe " + group.name +
+                                     " beigetreten.", members)
     current_user.groups << group
     current_user.save
     flash[:success] = "You successfully joined #{group.name}."

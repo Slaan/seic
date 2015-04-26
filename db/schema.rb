@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150426003320) do
+ActiveRecord::Schema.define(version: 20150425211306) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "street"
@@ -64,12 +64,12 @@ ActiveRecord::Schema.define(version: 20150426003320) do
   add_index "user_messages", ["sender_id"], name: "index_user_messages_on_sender_id"
 
   create_table "users", force: :cascade do |t|
-    t.string   "name",            limit: 255
-    t.string   "email",           limit: 255
+    t.string   "name"
+    t.string   "email"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "username",        limit: 255
-    t.string   "password_digest", limit: 255
+    t.string   "username"
+    t.string   "password_digest"
     t.string   "first_name"
     t.date     "birthday"
     t.string   "details"

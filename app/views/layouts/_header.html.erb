@@ -1,13 +1,13 @@
 <header class="navbar navbar-fixed-top navbar-inverse">
   <div class="container">
     <%= link_to "Tindbike", root_path, id: "logo" %>
-    <nav>
-      <% if logged_in? %>
-        <%= form_tag(search_path, method: :get) do %>
-          <%= search_field_tag :search_text, params[:search_text] %>
-        <% end %>
+    <% if logged_in? %>
+      <%= form_tag(search_path, method: :get) do %>
+        <%= search_field_tag :search_text, params[:search_text], :class => "search", :maxlength=>"75" %>
       <% end %>
-	  <ul class="nav navbar-nav pull-right">
+    <% end %>
+    <nav>
+      <ul class="nav navbar-nav pull-right">
 		<li><%= link_to "Home",   root_path %></li>
 		<li><%= link_to "Help",   help_path %></li>
 		<li><%= link_to "About",  about_path %></li>

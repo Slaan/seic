@@ -13,3 +13,11 @@
  *= require_tree .
  *= require_self
  */
+input.search {
+    width:30%;
+    
+    margin: 0;
+    top: 20%;
+    position: absolute;
+    align-items: center;
+}

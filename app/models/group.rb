@@ -15,6 +15,9 @@ class Group < ActiveRecord::Base
     attributes :name
   end
 
+  def is_member?(user_id)
+    users.where("id = ?", user_id).size > 0
+  end
 
 
   private

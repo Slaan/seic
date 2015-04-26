@@ -1,0 +1,4 @@
+<% @group.users.each do |user| %>
+  <%= link_to "#{user.username} ", user_path(id: user.id) %>
+<% end %>
+<br/></br/>

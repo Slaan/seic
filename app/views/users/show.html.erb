@@ -1,8 +1,8 @@
 <%= image_tag @user.picture.url if @user.picture? %>
 <%= @user.name %>, <%= @user.email %>
 
-
-<br/><br/></br><br/><br/></br><br/><br/></br><br/><br/></br>
+<%= link_to "Edit Profile", edit_user_path %>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 
 
 <script type="text/javascript">

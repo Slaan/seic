@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-  before_action :set_user, only: [:update, :show, :edit]
+  before_action :set_user, only: [:update, :show, :edit, :messages]
 
   def show
   end
@@ -24,16 +24,9 @@ class UsersController < ApplicationController
   def edit
   end
 
-  def join_group
-    group = Group.find(params[:group_id])
-    members = group.users.pluck(:id)
-    UserMessageService.send_messages(current_user.name +
-                                     " ist der Gruppe " + group.name +
-                                     " beigetreten.", members)
-    current_user.groups << group
-    current_user.save
-    flash[:success] = "You successfully joined #{group.name}."
-    redirect_to :back
+  def messages
+    @recieved_messages = @user.recieved_messages
+    @send_messages = @user.send_messages
   end
 
   
@@ -43,9 +36,8 @@ class UsersController < ApplicationController
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
       else
-        pry
-        format.html { render :show }
-        format.json { render json: @product.errors, status: :unprocessable_entity }
+        format.html { render :edit }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -54,7 +46,11 @@ class UsersController < ApplicationController
 
       # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find(params[:id])
+      if params[:id]
+        @user = User.find(params[:id])
+      else
+        @user = current_user
+      end
     end
 
   def user_params

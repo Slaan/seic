@@ -1,0 +1,20 @@
+<table>
+
+  	<colgroup>
+	    <col span="1" style="width: 30%;">
+		<col span="1" style="width: 70%;">
+	</colgroup>
+    
+  <thead>
+    <tr>
+      <th>Sender</th>
+      <th>Message</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% messages.each do |message| %>
+      <td><%= link_to message.sender.username, user_path(id: message.sender.id) %></td>
+      <td><%= message.message %></td>
+    <% end %>
+  </tbody>
+</table>

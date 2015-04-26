@@ -1,2 +1,13 @@
 <%= image_tag @group.picture.url if @group.picture? %>
 <%= @group.name + ", " + @group.details %>
+<% if @group.is_member? current_user.id %>
+  <%= link_to 'Leave Group', leave_group_path(group_id: @group.id) %>
+<% else %>
+  <%= link_to 'Join Group', join_group_path(group_id: @group.id) %>
+<% end %>
+
+<br/>
+
+<h2>Members</h2>
+<%= render "members" %>
+

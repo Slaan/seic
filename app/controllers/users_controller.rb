@@ -29,7 +29,6 @@ class UsersController < ApplicationController
     @send_messages = @user.send_messages
   end
 
-  
   def update
     respond_to do |format|
       if @user.update(user_params)

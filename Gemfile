@@ -26,6 +26,7 @@ group :development, :test do
   gem 'sqlite3',     '1.3.10'
   gem 'pry'
   gem 'pry-rails'
+  gem 'pry-doc'
   gem 'pry-byebug', '3.1.0'
   gem 'better_errors', '2.1.1'
   gem 'binding_of_caller', '0.7.2'

@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
   include SearchCop
 
+  after_validation { self.errors.messages.delete(:password_digest) }
+
   mount_uploader :picture, PictureUploader
   
   before_save { self.email = email.downcase }
@@ -8,7 +10,7 @@ class User < ActiveRecord::Base
   validates :email, presence: true
   validates :name,  presence: true, length: { maximum: 50 }
   validates :username, presence: true, length: { maximum: 20 }
-  validates :password, presence: true
+  validates :password_digest, presence: true
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
   validates :email, presence: true,
                     length: { maximum: 255 },
@@ -42,3 +44,4 @@ class User < ActiveRecord::Base
     end
   
 end
+

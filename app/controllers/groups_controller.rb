@@ -10,10 +10,9 @@ class GroupsController < ApplicationController
 
   def join
     group = Group.find(params[:group_id])
-    members = group.users.pluck(:id)
-    UserMessageService.send_messages(current_user.name +
+    UserMessageService.send_system_group_message(current_user.name +
       " ist der Gruppe " + group.name +
-      " beigetreten.", members)
+      " beigetreten.", group)
     current_user.groups << group
     current_user.save
     flash[:success] = "You successfully joined #{group.name}."
@@ -23,10 +22,9 @@ class GroupsController < ApplicationController
   def leave
     group = Group.find(params[:group_id])
     current_user.groups.delete(group)
-    members = group.users.pluck(:id)
-    UserMessageService.send_messages(current_user.name +
+    UserMessageService.send_system_group_message(current_user.name +
       " ist aus der Gruppe " + group.name +
-      " ausgetreten.", members)
+      " ausgetreten.", group)
     flash[:success] = "You successfully left #{group.name}."
     redirect_to :back
   end

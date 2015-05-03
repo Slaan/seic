@@ -6,7 +6,7 @@ class UserMessageService
   end
   
   def self.send_messages(message, sender, reciever_ids)
-    unless sender.kind_of? Integer then sender = sender.id end
+    sender = IDHelper::to_id(sender)
     reciever_ids.each do |reciever_id|
       UserMessage.create(message: message, sender_id: sender, reciever_id: reciever_id)
     end

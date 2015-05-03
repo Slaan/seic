@@ -6,3 +6,10 @@ one:
   name: 'John'
   first_name: 'Doe'
   password_digest: <%= default_password_digest %>
+
+two:
+  email: 'some2@user.com'
+  username: 'Anyone2'
+  name: 'John2'
+  first_name: 'Doe2'
+  password_digest: <%= default_password_digest %>

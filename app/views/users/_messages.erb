@@ -1,12 +1,14 @@
 <table>
 
   <colgroup>
+	<col span="1" style="width: 20%;">
 	<col span="1" style="width: 30%;">
-	<col span="1" style="width: 70%;">
+    <col span="1" style="with: 50%"">
   </colgroup>
   
   <thead>
     <tr>
+      <th></th>
       <th>Sender</th>
       <th>Message</th>
     </tr>
@@ -14,6 +16,7 @@
   <tbody>
     <% messages.each do |message| %>
       <tr>
+        <td><%= message.created_at.strftime("%x %H:%M:%S") %></td>
         <td><%= link_to message.sender.username, user_path(id: message.sender.id) %></td>
         <td><%= message.message %></td>
       </tr>

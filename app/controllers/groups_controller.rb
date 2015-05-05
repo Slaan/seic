@@ -19,7 +19,7 @@ class GroupsController < ApplicationController
       " beigetreten.", @group)
     current_user.groups << @group
     current_user.save
-    flash[:success] = "You successfully joined #{group.name}."
+    flash[:success] = "You successfully joined #{@group.name}."
     redirect_to :back
   end
 
@@ -28,7 +28,7 @@ class GroupsController < ApplicationController
     UserMessageService.send_system_group_message(current_user.name +
       " ist aus der Gruppe " + @group.name +
       " ausgetreten.", @group)
-    flash[:success] = "You successfully left #{group.name}."
+    flash[:success] = "You successfully left #{@group.name}."
     redirect_to :back
   end
 

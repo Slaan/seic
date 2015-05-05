@@ -1,37 +1,37 @@
 class GroupsController < ApplicationController
+
+  before_action :authenticate_user!
+  before_action :set_group, only: [:show, :edit, :join, :leave]
   
   def new
     @group = Group.new
   end
 
   def show
-    @group = Group.find(params[:id])
+  end
+
+  def edit
   end
 
   def join
-    group = Group.find(params[:group_id])
     UserMessageService.send_system_group_message(current_user.name +
-      " ist der Gruppe " + group.name +
-      " beigetreten.", group)
-    current_user.groups << group
+      " ist der Gruppe " + @group.name +
+      " beigetreten.", @group)
+    current_user.groups << @group
     current_user.save
     flash[:success] = "You successfully joined #{group.name}."
     redirect_to :back
   end
 
   def leave
-    group = Group.find(params[:group_id])
-    current_user.groups.delete(group)
+    current_user.groups.delete(@group)
     UserMessageService.send_system_group_message(current_user.name +
-      " ist aus der Gruppe " + group.name +
-      " ausgetreten.", group)
+      " ist aus der Gruppe " + @group.name +
+      " ausgetreten.", @group)
     flash[:success] = "You successfully left #{group.name}."
     redirect_to :back
   end
 
-
-
-  before_action :authenticate_user!
   def index
     @group_membership = User.group_membership(current_user)
     @groups = Group.all
@@ -50,6 +50,16 @@ class GroupsController < ApplicationController
   end
 
   private
+
+  def set_group
+    if params[:id]
+      @group = Group.find(params[:id])
+    end
+    
+    if params[:group_id]
+      @group = Group.find(params[:group_id])
+    end
+  end
 
   def group_params
     params.require(:group).permit(:name, :details, :picture)

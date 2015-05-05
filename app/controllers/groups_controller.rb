@@ -1,7 +1,7 @@
 class GroupsController < ApplicationController
 
   before_action :authenticate_user!
-  before_action :set_group, only: [:show, :edit, :join, :leave]
+  before_action :set_group, only: [:show, :edit, :join, :leave, :update]
   
   def new
     @group = Group.new
@@ -46,6 +46,18 @@ class GroupsController < ApplicationController
       redirect_to @group
     else
       render 'new'
+    end
+  end
+
+  def update
+    respond_to do |format|
+      if @group.update(group_params)
+        format.html { redirect_to @group, notice: 'Group was successfully updated.' }
+        format.json { render :show, status: :ok, location: @group }
+      else
+        format.html { render :edit }
+        format.json { render json: @group.errors, status: :unprocessable_entity }
+      end
     end
   end
 

@@ -6,7 +6,7 @@ class UserMessageService
   end
   
   def self.send_messages(message, sender, reciever_ids)
-    sender = IDHelper::to_id(sender)
+    sender = IdHelper::to_id(sender)
     reciever_ids.each do |reciever_id|
       UserMessage.create(message: message, sender_id: sender, reciever_id: reciever_id)
     end

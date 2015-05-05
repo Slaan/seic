@@ -34,6 +34,9 @@ Rails.application.configure do
 
   config.serve_static_files = true
 
+  # Set timezone to local time zone
+  config.time_zone = "Berlin"
+
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 end

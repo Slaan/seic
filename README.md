@@ -1,3 +1,9 @@
+External Dependencies:
+* Javascript runtime
+Under windows: download Node.js
+
+https://nodejs.org/download/
+
 # Setup
 ```
 bundle install --without production

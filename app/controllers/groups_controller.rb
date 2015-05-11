@@ -1,6 +1,6 @@
 class GroupsController < ApplicationController
 
-  before_action :authenticate_user!
+  before_action :logged_in_user
   before_action :set_group, only: [:show, :edit, :join, :leave, :update]
   
   def new
@@ -8,6 +8,7 @@ class GroupsController < ApplicationController
   end
 
   def show
+    @group_messages = @group.group_messages.paginate(page: params[:page])
   end
 
   def edit

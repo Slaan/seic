@@ -1,0 +1,8 @@
+<li id="group_message-<%= group_message.id %>">
+
+  <span class="user"><%= link_to group_message.user.name, group_message.user %></span>
+  <span class="content"><%= group_message.message %></span>
+  <span class="timestamp">
+    Posted <%= time_ago_in_words(group_message.created_at) %> ago.
+  </span>
+</li>

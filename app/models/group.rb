@@ -9,7 +9,7 @@ class Group < ActiveRecord::Base
   validate  :picture_size
   
   has_and_belongs_to_many :users
-  has_many :group_messages
+  has_many :group_messages, dependent: :destroy
 
   search_scope :search do
     attributes :name

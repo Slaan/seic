@@ -1,0 +1,9 @@
+<%= form_for(@group_message) do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+  <div class="field">
+    <%= f.text_area :message, placeholder: "Compose new group post" %>
+  </div>
+  <%= hidden_field_tag :group_id, params[:group_id] %>
+  <%= hidden_field_tag :user_id, current_user.id %>
+  <%= f.submit "Post", class: "btn btn-primary" %>
+<% end %>

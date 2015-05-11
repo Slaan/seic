@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   resources :users
   resources :groups
+  resources :group_messages, only: [:new, :create, :destroy]
   
   root 'static_pages#home'
   get 'help'    => 'static_pages#help'

@@ -8,8 +8,11 @@
       <div class="panel-body text-center">
         <%= image_tag @user.picture.url if @user.picture? %>
         <br/><br/>
-        <a href="#">Inbox <span class="badge">42</span></a>
+        <%= link_to messages_path, :class => 'btn btn-default' do %>
+            Inbox <span class="badge"><%= @user.recieved_messages.count%></span>
+        <% end %>
         <br/><br/>
+
         <p><%= link_to "Edit Profile", edit_user_path, class: "btn btn-default" %></p>
       </div>
     </div>

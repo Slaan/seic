@@ -1,5 +1,6 @@
+<h3>Posts (<%= @group.group_messages.count %>)
+  <%= link_to "Create new Post", new_group_message_path(group_id: @group.id) if @group.users.include? current_user %></h3>
 <% if @group.group_messages.any? %>
-  <h3>Posts (<%= @group.group_messages.count %>) <%= link_to "Create new Post", new_group_message_path(group_id: @group.id) %></h3>
   <ol class="group_messages">
     <%= render @group_messages %>
   </ol>

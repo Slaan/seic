@@ -1,20 +1,32 @@
-<table>
+<div class="row">
+    <table class="table table-striped">
 
-	<colgroup>
-	    <col span="1" style="width: 33%;">
-		<col span="1" style="width: 33%;">
-		<col span="1" style="width: 33%;">
-	</colgroup>
-	
-	<tbody>
+        <!-- <colgroup>
+            <col span="1" style="width: 33%;">
+            <col span="1" style="width: 33%;">
+            <col span="1" style="width: 33%;">
+        </colgroup> -->
 
-		<% @users.each do |user| %>
-			<tr>
-				<td><%= link_to user.username, user_path(id: user.id) %></td>
-				<td><%= "#{user.first_name} #{user.name}" %></td>
-				<td><%= user.details %></td>
-			</tr>
-		<% end %>
-	</tbody>
-	
-</table>
+      <thead>
+      <tr>
+        <th class="col-md-1"></th> <!-- col for pictures -->
+        <th class="col-md-2">Username</th>
+        <th class="col-md-2">First Name</th>
+        <th class="col-md-2">Details</th>
+      </tr>
+      </thead>
+
+      <tbody>
+
+            <% @users.each do |user| %>
+                <tr>
+                    <td><%= image_tag user.picture.url if user.picture? %></td>
+                    <td><%= link_to user.username, user_path(id: user.id) %></td>
+                    <td><%= "#{user.first_name} #{user.name}" %></td>
+                    <td><%= user.details %></td>
+                </tr>
+            <% end %>
+        </tbody>
+
+    </table>
+</div>

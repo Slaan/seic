@@ -1,6 +1,7 @@
 class GroupMessagesController < ApplicationController
   before_action :set_group, only: [:new, :create, :destroy]
   before_action :logged_in_user, only: [:new, :create, :destroy]
+  before_action :correct_user,   only: :destroy
 
   def new
     @group_message = @group.group_messages.build
@@ -18,6 +19,11 @@ class GroupMessagesController < ApplicationController
   end
 
   def destroy
+    @group_message = GroupMessage.find(params[:id])
+    pry
+    @group_message.destroy
+    flash[:success] = "Post deleted"
+    redirect_to @group || root_url
   end
 
   private
@@ -28,5 +34,10 @@ class GroupMessagesController < ApplicationController
   
   def group_message_params
     params.require(:group_message).permit(:message, :group_id, :user_id)
+  end
+
+  def correct_user
+    @group_message = current_user.group_messages.find_by(id: params[:id])
+    redirect_to @group if @group_message.nil?
   end
 end

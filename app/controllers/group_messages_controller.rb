@@ -20,7 +20,6 @@ class GroupMessagesController < ApplicationController
 
   def destroy
     @group_message = GroupMessage.find(params[:id])
-    pry
     @group_message.destroy
     flash[:success] = "Post deleted"
     redirect_to @group || root_url

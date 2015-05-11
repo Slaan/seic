@@ -8,11 +8,13 @@ Rails.application.routes.draw do
 
   resources :users
   resources :groups
+  resources :group_messages, only: [:index, :new, :create, :destroy]
   
   root 'static_pages#home'
   get 'help'    => 'static_pages#help'
   get 'about'   => 'static_pages#about'
   get 'contact' => 'static_pages#contact'
+  post 'delete_group_message' => 'group_messages#destroy'
   get 'signup' => 'users#new'
   get    'login'   => 'sessions#new'
   post   'login'   => 'sessions#create'

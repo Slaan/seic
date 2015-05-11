@@ -3,7 +3,7 @@
     <%= link_to "Tindbike", root_path, id: "logo" %>
     <% if logged_in? %>
       <%= form_tag(search_path, method: :get) do %>
-        <%= search_field_tag :search_text, params[:search_text], :class => "search", :maxlength=>"75" %>
+        <%= search_field_tag :search_text, params[:search_text], :class => "search", :maxlength=>"75", :placeholder => "Search for users and groups..." %>
       <% end %>
     <% end %>
     <nav>

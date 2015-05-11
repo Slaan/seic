@@ -1,4 +1,29 @@
-<% @group.users.each do |user| %>
-  <%= link_to "#{user.username} ", user_path(id: user.id) %>
-<% end %>
-<br/></br/>
+<div class="row">
+
+  <h2 class="pull-left">Members (<%= @group.users.size %>)</h2>
+
+  <table class="table table-striped">
+
+    <thead>
+    <tr>
+      <th class="col-md-1"></th> <!-- col for pictures -->
+      <th class="col-md-2">Username</th>
+      <th class="col-md-2">Name</th>
+      <th class="col-md-2">Details</th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    <% @group.users.each do |user| %>
+        <tr>
+          <td><%= image_tag user.picture.url if user.picture? %></td>
+          <td><%= link_to user.username, user_path(id: user.id) %></td>
+          <td><%= "#{user.first_name} #{user.name}" %></td>
+          <td><%= user.details %></td>
+        </tr>
+    <% end %>
+    </tbody>
+
+  </table>
+</div>

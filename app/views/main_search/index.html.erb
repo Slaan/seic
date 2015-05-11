@@ -1,12 +1,11 @@
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
+<div class="row">
+  <div class="page-header">
+    <h3>Results for "<small><%= params[:search_text] %></small>"</h3>
+  </div>
+</div>
 
-<h2>Users</h2>
-<%= render "users/show_users"%>
+  <h2 class="pull-left">Users</h2>
+  <%= render "users/show_users" %>
 
-<h2>Groups</h2>
-<%= render "groups/show_groups"%>
+  <h2 class="pull-left">Groups</h2>
+  <%= render "groups/show_groups" %>

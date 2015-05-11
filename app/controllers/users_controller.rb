@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   
-  before_action :logged_in_user
+  before_action :logged_in_user, except: [:new]
   before_action :set_user, only: [:update, :show, :edit, :messages]
 
   def show

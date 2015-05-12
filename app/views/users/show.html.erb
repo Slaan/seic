@@ -6,11 +6,16 @@
       </div>
 
       <div class="panel-body text-center">
-        <%= image_tag @user.picture.url if @user.picture? %>
+        <% if @user.picture? %>
+            <%= image_tag @user.picture.url %>
+        <% else %>
+            <%= image_tag 'https://s3.eu-central-1.amazonaws.com/seic-storage/public/images/missing_pic.png' %>
+        <% end %>
+
         <% if current_user?(@user) %>
             <br/><br/>
             <%= link_to messages_path, :class => 'btn btn-default' do %>
-                Inbox <span class="badge"><%= @user.recieved_messages.count%></span>
+                Inbox <span class="badge"><%= @user.recieved_messages.count %></span>
             <% end %>
             <br/><br/>
 

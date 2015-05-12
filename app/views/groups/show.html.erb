@@ -6,7 +6,11 @@
       </div>
 
       <div class="panel-body text-center">
-        <%= image_tag @group.picture.url if @group.picture? %>
+        <% if @group.picture? %>
+            <%= image_tag @group.picture.url %>
+        <% else %>
+            <%= image_tag 'https://s3.eu-central-1.amazonaws.com/seic-storage/public/images/missing_pic.png' %>
+        <% end %>
       </div>
 
       <div class="panel-footer text-center">

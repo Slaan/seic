@@ -1,30 +1,37 @@
 <div class="row">
-    <table class="table table-striped">
+  <table class="table table-striped">
 
-      <thead>
-      <tr>
-        <th class="col-md-1"></th> <!-- col for pictures -->
-        <th class="col-md-2">Name</th>
-        <th class="col-md-4">Description</th>
-        <th class="col-md-1">Action</th>
-      </tr>
-      </thead>
+    <thead>
+    <tr>
+      <th class="col-md-1"></th>
+      <!-- col for pictures -->
+      <th class="col-md-2">Name</th>
+      <th class="col-md-4">Description</th>
+      <th class="col-md-1">Action</th>
+    </tr>
+    </thead>
 
-      <tbody>
+    <tbody>
 
-      <% @groups.each do |group| %>
-          <tr>
-            <td><%= image_tag group.picture.url if group.picture? %></td>
-            <td><%= link_to group.name, group_path(id: group.id) %></td>
-            <td><%= group.details %></td>
-            <% unless @group_membership.include? group.id %>
-                <td><%= link_to 'Join Group', join_group_path(group_id: group.id), class: "btn btn-success" %></td>
+    <% @groups.each do |group| %>
+        <tr>
+          <td>
+            <% if group.picture? %>
+                <%= image_tag group.picture.url %>
             <% else %>
-                <td><%= link_to 'Leave Group', leave_group_path(group_id: group.id), class: "btn btn-warning" %></td>
+                <%= image_tag 'https://s3.eu-central-1.amazonaws.com/seic-storage/public/images/missing_pic_thumb.png' %>
             <% end %>
-          </tr>
-      <% end %>
-      </tbody>
+          </td>
+          <td><%= link_to group.name, group_path(id: group.id) %></td>
+          <td><%= group.details %></td>
+          <% unless @group_membership.include? group.id %>
+              <td><%= link_to 'Join Group', join_group_path(group_id: group.id), class: "btn btn-success" %></td>
+          <% else %>
+              <td><%= link_to 'Leave Group', leave_group_path(group_id: group.id), class: "btn btn-warning" %></td>
+          <% end %>
+        </tr>
+    <% end %>
+    </tbody>
 
-    </table>
+  </table>
 </div>

@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   delete 'logout'  => 'sessions#destroy'
   get 'search' => 'main_search#index'
   get 'messages' => 'users#messages'
+  
   # post 'search' => 'parts#search'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

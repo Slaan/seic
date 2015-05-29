@@ -4,6 +4,8 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:update, :show, :edit, :messages]
 
   def show
+    @group_membership = User.group_membership(current_user)
+    @groups = @user.groups
   end
   
   def new

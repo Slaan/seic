@@ -1,5 +1,15 @@
 Rails.application.routes.draw do
 
+  get 'tracks/show'
+
+  get 'tracks/create'
+
+  get 'tracks/delete'
+
+  get 'tracks/update'
+
+  get 'tracks/edit'
+
   get 'groups/new'
 
   get 'sessions/new'

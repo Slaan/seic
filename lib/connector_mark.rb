@@ -124,8 +124,8 @@ class ConnectorMark
         track_to_hash(track))
     end
 
-    def update_track(track)
-      put(TRACKS_PATH,
+    def update_track(old_name, track)
+      put("#{TRACKS_PATH}/#{old_name}",
         track_to_hash(track))
     end
 

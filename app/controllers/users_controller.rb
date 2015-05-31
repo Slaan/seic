@@ -16,13 +16,12 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    if @user.validate
-      response = CONNECTOR.create_user(@user)
-      if response.status = 201 and @user.save
-        log_in @user
-        flash[:success] = "Welcome to Tindbike!"
-        redirect_to @user
-      end
+    if @user.validate and
+        CONNECTOR.create_user(@user).status == 201 and
+        @user.save
+      log_in @user
+      flash[:success] = "Welcome to Tindbike!"
+      redirect_to @user
     else
       render 'new'
     end
@@ -39,9 +38,10 @@ class UsersController < ApplicationController
 
   def update
     respond_to do |format|
+      old_user = @user.dup
       @user.assign_attributes(user_params)
       if @user.validate and
-          CONNECTOR.connection(@user).update_user(@user).status == 200 and
+          CONNECTOR.connection(old_user).update_user(old_user.username, old_user, @user).status == 200 and
           @user.save
         format.html { redirect_to @user }
         flash[:success] = 'User was successfully updated.'
@@ -63,6 +63,8 @@ class UsersController < ApplicationController
       @user = current_user
     end
   end
+
+
 
   def user_params
     params.require(:user).permit(:username, :name, :email, :password,

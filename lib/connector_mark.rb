@@ -12,9 +12,13 @@ class ConnectorMark
   attr_reader :connection
 
   def initialize
-    community_connection = setup_connection(COMMUNITY_NAME, COMMUNITY_PASSWORD)
+    community_connection = setup_community_connection
     @community_token = login(community_connection)
-    @connection = setup_connection(USER_NAME, USER_PASSWORD)
+    @connection = setup_community_connection
+  end
+
+  def setup_community_connection
+    setup_connection(COMMUNITY_NAME, COMMUNITY_PASSWORD)
   end
 
   def setup_connection(user_name, user_password)
@@ -57,13 +61,14 @@ class ConnectorMark
       request.body = JSON.generate(params) if params.kind_of? Hash
       request.body = params.to_json if params.kind_of? ActiveRecord::Base
       p "Posting body: #{request.body}"
-      end
+    end
   end
 
   # Used to update existing records
   def put(path, params = nil)
-    @connection.post(path) do |request|
+    @connection.put(path) do |request|
       request.body = JSON.generate(params) if params
+      p "Put body: #{request.body}"
     end
   end
 
@@ -77,23 +82,37 @@ class ConnectorMark
     USERS_PATH = "users"
 
     def create_user(user)
-      post(USERS_PATH,
+      setup_community_connection
+      response = post(USERS_PATH,
         user_to_hash(user))
+      response
     end
 
-    def update_user(user)
-      put(USERS_PATH,
+    def update_user(username, old_user, new_user)
+      #      binding.pry
+      user = user_diff(old_user, new_user)
+      put("#{USERS_PATH}/#{username}",
         user_to_hash(user))
     end
 
     def get_user(user)
-      get("#{USERS_PATH}/#{user.name}")
+      get("#{USERS_PATH}/#{user.username}")
     end
 
     def user_to_hash(user)
-      {user_name: user.username,
-        user_mail: user.email,
-        user_password: user.password_digest}
+      hash = {}
+      hash[:user_name] = user.username if user.username
+      hash[:user_mail] = user.email if user.email
+      hash[:user_password] = user.password_digest if user.password_digest
+      hash
+    end
+
+    def user_diff(old_user, new_user)
+      user_dto = User.new
+      user_dto.username = new_user.username if not old_user.username == new_user.username
+      user_dto.email = new_user.email if not old_user.email == new_user.email
+      user_dto.password_digest = new_user.password_digest if (not old_user.password_digest == new_user.password_digest)
+      user_dto
     end
 
     def delete_user(user)

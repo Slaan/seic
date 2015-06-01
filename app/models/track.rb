@@ -5,11 +5,11 @@ class Track
   #WAYPOINTS = {type: "Feature", geometry: { type: "Point", coordinates: [125.6, 10.1] }, properties: { name: "Dinagat Islands" } }
 
   def initialize(params)
-    @name = params[:name]
-    @description = params[:description]
-    @waypoints = params[:waypoints]
+    @name = params["name"]
+    @description = params["description"]
+    @waypoints = params["waypoints"]
     #@waypoints = WAYPOINTS
-    @tags = params[:keywords]
+    @tags = params["keywords"]
     binding.pry
   end
 end

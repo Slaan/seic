@@ -1,6 +1,6 @@
 class TracksController < ApplicationController
 
-  
+  CONNECTOR = ConnectorFactory.connection
   
   def show
   end
@@ -15,6 +15,7 @@ class TracksController < ApplicationController
     @track.description = params[:description]
     @track.waypoints = params[:waypoints]
     @track.tags = params[:tags]
+    CONNECTOR.connection(current_user).create_track(@track)
   end
 
   def delete

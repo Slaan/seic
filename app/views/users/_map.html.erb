@@ -9,9 +9,6 @@
 <script type="text/javascript" src="/node_modules/geojson/geojson.min.js"></script>
 
 
-
-
-
 <div class="row col-md-12">
 
   <div class="panel panel-default">
@@ -181,7 +178,7 @@
     console.log(route);
 
     // Send information to backend
-    $.post("/route", {data: JSON.stringify(route)}).done(function() {
+    $.post("/create_track", {data: JSON.stringify(route)}).done(function() {
       console.log(route);
       console.log(JSON.stringify(route));
       alert( "route is saved successfully" );

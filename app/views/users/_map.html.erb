@@ -6,7 +6,7 @@
 <script src="/leaflet-routing-machine-2.3.0/Control.Geocoder.js"></script>
 <script src="/leaflet-routing-machine-2.3.0/lrm-graphhopper-1.1.0.js"></script>
 <script src="/leaflet-routing-machine-2.3.0/easy-button.js"></script>
-
+<script type="text/javascript" src="/node_modules/geojson/geojson.min.js"></script>
 
 
 
@@ -18,18 +18,19 @@
     <div class="panel-heading">Map</div>
     <div class="panel-body">
       <div class="col-md-3 col-md-offset-0" >
-        <%= form_for(@user) do |f| %>
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name">
+        <label for="description">Description</label>
+        <input type="text" name="description" id="description">
+        <label for="keywords">Keywords</label>
+        <span style="font-size: 10px;">Example: Wald Strand Berg</span>
+        <input type="text" name="keywords" id="keywords">
+        <button class="save-btn" onclick="exportRoute()">Save</button>
 
-          <%= f.label :username %>
-          <%= f.text_field :username, class: 'form-control' %>
-
-        <% end %>
       </div>
-
       <div id="map"></div>
     </div>
   </div>
-
 
 
 <style>
@@ -125,6 +126,70 @@
         });
   }
 
+  // Gets called from "Speichern" button
+  function exportRoute() {
+    var waypoints = control.getWaypoints();
+
+    // Maps has too much information for backend,
+    // therewith we build hashes with relevant information
+    // data = array of objects, objects = hashes with lat, lng and name
+    var data = $.map(waypoints, function(value, index){
+      return {
+        latitude: value.latLng.lat,
+        longitude: value.latLng.lng,
+        name: value.name
+      }
+    });
+
+    // Set name of the route
+    var routeName = document.getElementById("name").value;
+
+    // Catch if user didn't type a name
+    if (routeName === "") {
+      window.alert("Die Route kann ohne Namen nicht gespeichert werden.");
+      return;
+    }
+
+    // Set description of the route
+    var routeDescription = document.getElementById("description").value;
+
+    if(routeDescription === "") {
+      window.alert("Die Route kann ohne Beschreibung nicht gespeichert werden.");
+      return;
+    }
+
+    // Set keywords of the route
+    var tmp = document.getElementById("keywords").value;
+    var routeKeywords = tmp.split(" ");
+
+    if(routeKeywords === "") {
+      window.alert("Die Route kann ohne Keyword nicht gespeichert werden.");
+      return;
+    }
+
+    var tmp1 = GeoJSON.parse(data, {Point: ['latitude', 'longitude']});
+    var geo = JSON.stringify(tmp1);
+    console.log(geo);
+
+    var route = {
+      name: routeName,
+      description: routeDescription,
+      keywords: routeKeywords,
+      waypoints: geo
+    }
+
+    console.log(route);
+
+    // Send information to backend
+    $.post("/route", {data: JSON.stringify(route)}).done(function() {
+      console.log(route);
+      console.log(JSON.stringify(route));
+      alert( "route is saved successfully" );
+      window.location.reload();
+    }).fail(function() {
+      alert( "Something went wrong, pls try again." );
+    });
+  }
 
 
 

@@ -4,9 +4,9 @@ class TracksController < ApplicationController
 
 
   def index
-    @tracks = CONNECTOR.connection(current_user).get_all_tracks
+    @tracks = CONNECTOR.connection(current_user).get_all_tracks.body
   end
-  
+
   def show
   end
 

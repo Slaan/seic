@@ -1,0 +1,149 @@
+REST Schnittstellen:
+
+fix url: https://trackyourtracks.eu-gb.mybluemix.net/
+
+ErrorObjects:
+error: {
+	error_type: string,
+	error_message: string,
+}
+
+Authentification: HTTP Basic Authenficiation
+1. Community
+rel url: /communities
+1.1. Anmeldung unserer Website:
+POST 
+Input:
+{
+	community_name: string,
+	user_name: string,
+	user_password: string
+}
+Output_succ:
+{
+	community_token: string
+}
+Output_err:
+{ community_name_taken: boolean,
+	error: {
+		..
+	}
+}
+HTTP Basic Authenficiation website_baseauth=user_name:user_password
+
+GET /<community_name>
+Require: website_baseauth
+Result:
+{
+	community_token
+}
+
+2. User
+for all: Require community_token in http request header
+rel url: /users
+2.1. Create User
+POST
+Input:
+{
+	user_name: string,
+	user_mail: string,
+	user_password: string
+}
+Output_succ:
+Output_err:
+{
+	user_name_taken: boolean,
+	user_mail_taken: boolean,
+	error {
+		..
+	}
+}
+HTTP Basic Authenficiation user_baseauth=user_name:user_password
+
+2.2 Get all Tracks
+Req: user_baseauth
+GET /<user_name>/tracks
+Input:
+Output_succ:
+[
+	track_name0,
+	track_name1,
+	...
+]
+Output_err:
+
+3. Tracks
+for all: 
+Require community_token in http request header
+Require user_baseauth
+rel url: /tracks
+3.1. Create Track
+POST
+Input:
+{
+	track_name: string,
+	track_description: string,
+	track_keywords: [string, ....],
+	track:gejson: string,
+	track_length: number
+}
+Output_succ:
+Output_err:
+{
+	track_name_taken: boolean,
+	error {
+		...
+	}
+}
+
+3.2. Update Track
+PUT /<track_name>
+Input:
+{
+	track_name: string,
+	track_description: string,
+	track_keywords: [string, ....],
+	track:gejson: string,
+	track_length: number
+}
+* All params are optional
+Output_succ:
+Output_err:
+{
+	track_name_taken: boolean,
+	error {
+		...
+	}
+}
+
+3.3. Get Track
+GET /<track_name>
+Input:
+Output_succ:
+{ 
+	track_name: string,
+	track_description: string,
+	track_keywords: [string, ....],
+	track:gejson: string,
+	track_length: number
+}
+Output_err:
+
+3.4. Delete Track
+DELETE /<track_name>
+Input:
+Output_succ:
+Output_err:
+
+3.5. Search for Tracks
+GET?
+matches_name=string
+length_greater_than=number
+length_less_than=number
+
+Output_succ:
+[
+	track_name0,
+	track_name1,
+	...
+]

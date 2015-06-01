@@ -144,8 +144,8 @@ class ConnectorMark
       get(TRACKS_PATH)
     end
 
-    def get_track(track)
-      get(TRACKS_PATH + "/" + track.name)
+    def get_track(trackname)
+      get(TRACKS_PATH + "/" + trackname)
     end
 
     def get_tracks_of(user)

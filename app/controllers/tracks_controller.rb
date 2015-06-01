@@ -10,13 +10,10 @@ class TracksController < ApplicationController
   end
   
   def create
-    p params
-    # @track = Track.new
-    # @track.name = params[:name]
-    # @track.description = params[:description]
-    # @track.waypoints = params[:waypoints]
-    # @track.tags = params[:tags]
-    # CONNECTOR.connection(current_user).create_track(@track)
+    
+    data = params[:data]
+    @track = Track.new(JSON.parse(data))
+    #CONNECTOR.connection(current_user).create_track(@track)
   end
 
   def delete

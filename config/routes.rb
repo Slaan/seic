@@ -1,21 +1,12 @@
 Rails.application.routes.draw do
 
-  get 'tracks/show'
-
-  get 'tracks/create'
-
-  get 'tracks/delete'
-
-  get 'tracks/update'
-
-  get 'tracks/edit'
-
   get 'groups/new'
 
   get 'sessions/new'
 
   get 'users/new'
 
+  resources :tracks
   resources :users
   resources :groups
   resources :group_messages, only: [:index, :new, :create, :destroy]

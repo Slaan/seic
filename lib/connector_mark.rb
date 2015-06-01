@@ -22,7 +22,7 @@ class ConnectorMark
   end
 
   def setup_connection(user_name, user_password)
-    Faraday.new API_URL do |builder|
+    Faraday.new API_URL, :ssl => {:verify => false} do |builder|
       builder.headers[:token] = @community_token if @community_token
       builder.use Faraday::Request::Retry
       builder.request :json

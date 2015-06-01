@@ -151,6 +151,10 @@ class ConnectorMark
     def get_tracks_of(user)
       get("#{USERS_PATH}/#{user.username}/#{TRACKS_PATH}")
     end
+
+    def query_tracks(params = nil)
+      get(TRACKS_PATH, params)
+    end
   end
 
   include ApiMethods

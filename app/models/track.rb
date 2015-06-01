@@ -9,6 +9,7 @@ class Track
     @description = params[:description]
     @waypoints = params[:waypoints]
     #@waypoints = WAYPOINTS
-    @tags = params[:tags]
+    @tags = params[:keywords]
+    binding.pry
   end
 end

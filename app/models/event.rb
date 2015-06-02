@@ -9,6 +9,12 @@ class Event < ActiveRecord::Base
   belongs_to :group
   has_and_belongs_to_many :users
 
+  CONNECTOR = ConnectorFactory.connection
+
+  def get_tracks
+    @tracks = TracksDeserializerMark.deserialize_all(CONNECTOR.connection(current_user).get_all_tracks.body)
+  end
+
   def is_member?(user_id)
     users.where("id = ?", user_id).size > 0
   end

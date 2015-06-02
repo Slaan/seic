@@ -1,3 +1,4 @@
+
 <div class="row col-md-12">
   <div class="row col-md-3">
     <div class="panel panel-default">
@@ -6,16 +7,11 @@
       </div>
 
       <div class="panel-body text-center">
-        <% if @user.picture? %>
-            <%= image_tag @user.picture.url %>
-        <% else %>
-            <%= image_tag 'https://s3.eu-central-1.amazonaws.com/seic-storage/public/images/missing_pic.png' %>
-        <% end %>
-
+        <%= image_tag @user.picture.url if @user.picture? %>
         <% if current_user?(@user) %>
             <br/><br/>
             <%= link_to messages_path, :class => 'btn btn-default' do %>
-                Inbox <span class="badge"><%= @user.recieved_messages.count %></span>
+                Inbox <span class="badge"><%= @user.recieved_messages.count%></span>
             <% end %>
             <br/><br/>
 
@@ -33,20 +29,20 @@
       </div>
     </div>
   </div>
+  <div>
+    <%= render partial: 'map'%>
+  </div>
 </div>
 
-<h2>Groups</h2>
-<% if @groups.any?  %>
-  <%= render partial: 'groups/show_groups' %>
-<% end %>
+
 
 </div>
 
 <script type="text/javascript">
- $('#user_picture').bind('change', function () {
-   var size_in_megabytes = this.files[0].size / 1024 / 1024;
-   if (size_in_megabytes > 5) {
-     alert('Maximum file size is 5MB. Please choose a smaller file.');
-   }
- });
+    $('#user_picture').bind('change', function () {
+        var size_in_megabytes = this.files[0].size / 1024 / 1024;
+        if (size_in_megabytes > 5) {
+            alert('Maximum file size is 5MB. Please choose a smaller file.');
+        }
+    });
 </script>

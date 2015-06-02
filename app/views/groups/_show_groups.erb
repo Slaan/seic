@@ -7,7 +7,7 @@
       <!-- col for pictures -->
       <th class="col-md-2">Name</th>
       <th class="col-md-4">Description</th>
-      <th class="col-md-1">Action</th>
+      <th class="col-md-1"></th>
     </tr>
     </thead>
 
@@ -16,15 +16,11 @@
     <% @groups.each do |group| %>
         <tr>
           <td>
-            <% if group.picture? %>
-                <%= image_tag group.picture.url %>
-            <% else %>
-                <%= image_tag 'https://s3.eu-central-1.amazonaws.com/seic-storage/public/images/missing_pic_thumb.png' %>
-            <% end %>
+            <%= thumbnail(group) %>
           </td>
           <td><%= link_to group.name, group_path(id: group.id) %></td>
           <td><%= group.details %></td>
-          <% unless @group_membership.include? group.id %>
+          <% unless group.is_member? current_user.id %>
               <td><%= link_to 'Join Group', join_group_path(group_id: group.id), class: "btn btn-success" %></td>
           <% else %>
               <td><%= link_to 'Leave Group', leave_group_path(group_id: group.id), class: "btn btn-warning" %></td>

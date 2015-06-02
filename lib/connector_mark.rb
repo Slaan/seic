@@ -4,9 +4,14 @@ require 'faraday_middleware'
 class ConnectorMark
 
   API_URL = 'https://trackyourtracks.eu-gb.mybluemix.net/api'
-  COMMUNITY_NAME = 'Tindbike'
-  COMMUNITY_PASSWORD = '1QfO9TWEpXbwPJIKOQPq'
-
+  if Rails.env.production?
+    COMMUNITY_NAME = ENV.fetch('MARK_COMMUNITY_NAME')
+    COMMUNITY_PASSWORD = ENV.fetch('MARK_USER_PASSWORD')
+  else
+    COMMUNITY_NAME = 'Tindbike'
+    COMMUNITY_PASSWORD = '1QfO9TWEpXbwPJIKOQPq'
+  end
+  
   attr_reader :connection
 
   def initialize

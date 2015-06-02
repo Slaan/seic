@@ -3,7 +3,7 @@ class TracksController < ApplicationController
   CONNECTOR = ConnectorFactory.connection
 
   def index
-    @tracks = JSON.generate(CONNECTOR.connection(current_user).get_all_tracks.body)
+    @tracks = JSON.generate(CONNECTOR.connection(current_user).get_tracks_of(current_user).body)
   end
 
   def show

@@ -3,7 +3,8 @@ class TracksController < ApplicationController
   CONNECTOR = ConnectorFactory.connection
 
   def index
-    @tracks = JSON.generate(CONNECTOR.connection(current_user).get_tracks_of(current_user).body)
+    @tracks = TracksDeserializerMark.deserialize_all(CONNECTOR.connection(current_user).get_tracks_of(current_user).body)
+
   end
 
   def show

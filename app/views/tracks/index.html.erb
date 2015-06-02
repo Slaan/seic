@@ -1,12 +1,6 @@
-<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css"/>
-<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"/>
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css"/>
+<link rel="stylesheet" href="/assets/stylesheets/leaflet.css"/>
 <link rel="stylesheet" href="/leaflet-routing-machine-2.3.0/leaflet-routing-machine.css"/>
-<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-<script src="/leaflet-routing-machine-2.3.0/leaflet-routing-machine.js"></script>
-<script src="/leaflet-routing-machine-2.3.0/Control.Geocoder.js"></script>
-<script src="/leaflet-routing-machine-2.3.0/lrm-graphhopper-1.1.0.js"></script>
-<script src="/leaflet-routing-machine-2.3.0/easy-button.js"></script>
-<script type="text/javascript" src="/node_modules/geojson/geojson.min.js"></script>
 
 <div class="row col-md-12">
 
@@ -16,14 +10,16 @@
       <div class="col-md-3 col-md-offset-0" >
         <label for="name">Name</label>
         <select name="name" id="name">
+          <option value=""></option>
+          <% @tracks.each do |track| %>
+            <option value="<%= track.name %>"><%= track.name %></option>
+          <% end %>
         </select>
-        <input type="text" name="bla" id="bla" value="<%= @tracks %>">
         <label for="description">Description</label>
         <input type="text" name="description" id="description">
         <label for="keywords">Keywords</label>
         <span style="font-size: 10px;">Example: Wald Strand Berg</span>
         <input type="text" name="keywords" id="keywords">
-
       </div>
       <div id="map"></div>
     </div>
@@ -121,6 +117,14 @@
               map.fitBounds(results[0].bbox);
             }
           });
+    }
+
+    var sel = document.getElementById('name');
+    sel.onchange = function() {
+      var namee = document.getElementById('name').value;
+      console.log(namee);
+
+
     }
 
   </script>

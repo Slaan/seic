@@ -17,7 +17,7 @@
 
     <% @group.users.each do |user| %>
         <tr>
-          <td><%= image_tag user.picture.url if user.picture? %></td>
+          <td><%= thumbnail(user) %></td>
           <td><%= link_to user.username, user_path(id: user.id) %></td>
           <td><%= "#{user.first_name} #{user.name}" %></td>
           <td><%= user.details %></td>

@@ -6,11 +6,7 @@
       </div>
 
       <div class="panel-body text-center">
-        <% if @user.picture? %>
-            <%= image_tag @user.picture.url %>
-        <% else %>
-            <%= image_tag 'https://s3.eu-central-1.amazonaws.com/seic-storage/public/images/missing_pic.png' %>
-        <% end %>
+        <%= thumbnail(@user) %>
 
         <% if current_user?(@user) %>
             <br/><br/>

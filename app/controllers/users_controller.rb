@@ -4,8 +4,6 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:update, :show, :edit, :messages]
 
   def show
-    @group_membership = User.group_membership(current_user)
-    @groups = @user.groups
   end
   
   def new
@@ -35,8 +33,7 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to @user }
-        flash[:success] = 'User was successfully updated.'
+        format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit }

@@ -14,4 +14,10 @@
 //= require jquery_ujs
 //= require bootstrap
 //= require turbolinks
+//= require leaflet
+//= require leaflet-routing-machine
+//= require Control.Geocoder
+//= require lrm-graphhopper-1.1.0
+//= require easy-button
+//= require geojson.min
 //= require_tree .

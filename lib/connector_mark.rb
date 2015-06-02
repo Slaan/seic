@@ -6,8 +6,6 @@ class ConnectorMark
   API_URL = 'https://trackyourtracks.eu-gb.mybluemix.net/api'
   COMMUNITY_NAME = 'Tindbike'
   COMMUNITY_PASSWORD = '1QfO9TWEpXbwPJIKOQPq'
-  USER_NAME = 'tindbike'
-  USER_PASSWORD = COMMUNITY_PASSWORD
 
   attr_reader :connection
 
@@ -42,7 +40,7 @@ class ConnectorMark
   end
 
   def login(connection)
-    connection.get('communities/' + USER_NAME.downcase).body["token"]
+    connection.get('communities/' + COMMUNITY_NAME.downcase).body["token"]
   end
 
   # first: login community(basic auth) => token
@@ -96,7 +94,7 @@ class ConnectorMark
     end
 
     def get_user(user)
-      get("#{USERS_PATH}/#{user.username}")
+      get("#{USERS_PATH}/#{user.username.downcase}")
     end
 
     def user_to_hash(user)
@@ -116,7 +114,7 @@ class ConnectorMark
     end
 
     def delete_user(user)
-      delete("#{USERS_PATH}/#{user.username}")
+      delete("#{USERS_PATH}/#{user.username.downcase}")
     end
 
     def create_track(track)
@@ -125,7 +123,7 @@ class ConnectorMark
     end
 
     def update_track(old_name, track)
-      put("#{TRACKS_PATH}/#{old_name}",
+      put("#{TRACKS_PATH}/#{old_name.downcase}",
         track_to_hash(track))
     end
 
@@ -137,7 +135,7 @@ class ConnectorMark
     end
 
     def delete_track(track)
-      delete(TRACKS_PATH + "/" + track.name)
+      delete(TRACKS_PATH + "/" + track.name.downcase)
     end
 
     def get_all_tracks
@@ -145,11 +143,11 @@ class ConnectorMark
     end
 
     def get_track(trackname)
-      get(TRACKS_PATH + "/" + trackname)
+      get(TRACKS_PATH + "/" + trackname.downcase)
     end
 
     def get_tracks_of(user)
-      get("#{USERS_PATH}/#{user.username}/#{TRACKS_PATH}")
+      get("#{USERS_PATH}/#{user.username.downcase}/#{TRACKS_PATH}")
     end
 
     def query_tracks(params = nil)

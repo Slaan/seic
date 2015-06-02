@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   resources :users
   resources :groups
   resources :group_messages, only: [:index, :new, :create, :destroy]
+  resources :events, except: [:index]
   
   root 'static_pages#home'
   get 'help'    => 'static_pages#help'
@@ -20,10 +21,12 @@ Rails.application.routes.draw do
   post   'login'   => 'sessions#create'
   get 'join_group' => 'groups#join'
   get 'leave_group' => 'groups#leave'
+  get 'join_event' => 'events#join'
+  get 'leave_event' => 'events#leave'
   delete 'logout'  => 'sessions#destroy'
   get 'search' => 'main_search#index'
   get 'messages' => 'users#messages'
-  # post 'search' => 'parts#search'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

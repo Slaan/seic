@@ -1,0 +1,27 @@
+<div class="row">
+
+  <h3>Participants (<%= @event.users.size %>)</h3>
+
+  <table class="table table-striped">
+
+    <thead>
+    <tr>
+      <th class="col-md-1"></th> <!-- col for pictures -->
+      <th class="col-md-2">Username</th>
+      <th class="col-md-2">Name</th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    <% @event.users.each do |user| %>
+        <tr>
+          <td><%= thumbnail(user) %></td>
+          <td><%= link_to user.username, user_path(id: user.id) %></td>
+          <td><%= "#{user.first_name} #{user.name}" %></td>
+        </tr>
+    <% end %>
+    </tbody>
+
+  </table>
+</div>

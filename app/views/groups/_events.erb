@@ -1,0 +1,38 @@
+<div class="row">
+
+  <h3>
+    Events (<%= @group.events.size %>)
+    <%= link_to "Create new Event", new_event_path(group_id: @group.id), class: "btn btn-primary" if @group.users.include? current_user %>
+  </h3>
+
+  <table class="table table-striped">
+
+    <thead>
+    <tr>
+      <th class="col-md-1"></th> <!-- col for pictures -->
+      <th class="col-md-2">Name</th>
+      <th class="col-md-2">Details</th>
+      <th class="col-md-2">Track</th>
+      <th class="col-md-2">Action</th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    <% @group.events.each do |event| %>
+        <tr>
+          <td><%= thumbnail(event) %></td>
+          <td><%= link_to event.name, event_path(id: event.id) %></td>
+          <td><%= event.details %></td>
+          <td><%= link_to event.track.to_s, track_path(track_id: event.track) %></td>
+          <% unless event.is_member? current_user.id %>
+              <td><%= link_to 'Join Event', join_event_path(event_id: event.id), class: "btn btn-success" %></td>
+          <% else %>
+              <td><%= link_to 'Leave Event', leave_event_path(event_id: event.id), class: "btn btn-warning" %></td>
+          <% end %>
+        </tr>
+    <% end %>
+    </tbody>
+
+  </table>
+</div>

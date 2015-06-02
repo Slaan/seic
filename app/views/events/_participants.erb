@@ -1,6 +1,6 @@
 <div class="row">
 
-  <h3>Members (<%= @group.users.size %>)</h3>
+  <h3>Participants (<%= @event.users.size %>)</h3>
 
   <table class="table table-striped">
 
@@ -9,18 +9,16 @@
       <th class="col-md-1"></th> <!-- col for pictures -->
       <th class="col-md-2">Username</th>
       <th class="col-md-2">Name</th>
-      <th class="col-md-2">Details</th>
     </tr>
     </thead>
 
     <tbody>
 
-    <% @group.users.each do |user| %>
+    <% @event.users.each do |user| %>
         <tr>
           <td><%= thumbnail(user) %></td>
           <td><%= link_to user.username, user_path(id: user.id) %></td>
           <td><%= "#{user.first_name} #{user.name}" %></td>
-          <td><%= user.details %></td>
         </tr>
     <% end %>
     </tbody>

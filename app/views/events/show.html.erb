@@ -1,0 +1,42 @@
+<div class="row col-md-12">
+  <div class="row col-md-3">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title" style="font-size: 28px"><%= @event.name %></h3>
+      </div>
+
+      <div class="panel-body text-center">
+        <%= thumbnail(@event) %>
+      </div>
+
+      <div class="panel-footer text-center">
+        <% if @event.is_member? current_user.id %>
+            <%= link_to 'Leave event', leave_event_path(event_id: @event.id), class: "btn btn-warning" %>
+        <% else %>
+            <%= link_to 'Join event', join_event_path(event_id: @event.id), class: "btn btn-success" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-9">
+    <div class="panel panel-default">
+      <div class="panel-heading">Details</div>
+      <div class="panel-body">
+        <%= @event.details %>
+      </div>
+    </div>
+  </div>
+  <% if @event.track %>
+  <div class="col-md-9">
+    <div class="panel panel-default">
+      <div class="panel-heading">Track</div>
+      <div class="panel-body">
+        <p><%= @event.track %></p>
+        <%= link_to 'Show track', track_path(track: @event.track), class: "btn btn-success" %>
+      </div>
+    </div>
+  </div>
+  <% end %>
+</div>
+
+<%= render "participants" %>

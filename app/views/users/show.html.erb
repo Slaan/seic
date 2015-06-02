@@ -1,3 +1,4 @@
+
 <div class="row col-md-12">
   <div class="row col-md-3">
     <div class="panel panel-default">
@@ -6,7 +7,8 @@
       </div>
 
       <div class="panel-body text-center">
-        <%= image_tag @user.picture.url if @user.picture? %>
+        <%= thumbnail(@user) %>
+
         <% if current_user?(@user) %>
             <br/><br/>
             <%= link_to messages_path, :class => 'btn btn-default' do %>
@@ -28,7 +30,12 @@
       </div>
     </div>
   </div>
+  <div>
+    <%= render partial: 'map'%>
+  </div>
 </div>
+
+
 
 </div>
 

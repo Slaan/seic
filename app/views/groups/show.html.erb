@@ -6,7 +6,7 @@
       </div>
 
       <div class="panel-body text-center">
-        <%= image_tag @group.picture.url if @group.picture? %>
+        <%= thumbnail(@group) %>
       </div>
 
       <div class="panel-footer text-center">
@@ -28,6 +28,8 @@
   </div>
 
 </div>
+
+<%= render "events" %>
 
 <%= render "members" %>
 

@@ -3,13 +3,27 @@ class EventsController < ApplicationController
   before_action :logged_in_user
   before_action :set_event, only: [:show, :edit, :join, :leave, :update]
 
+  CONNECTOR = ConnectorFactory.connection
+
   def new
     @event = Event.new
+    get_tracks
     if params[:group_id]
       # check if group_id is valid to prevent method from writing invalid ids to new events
       @event.group_id = params[:group_id]
     else
       redirect_to groups_path
+    end
+  end
+
+  def show
+    get_tracks
+  end
+
+  def get_tracks
+    tracks = TracksDeserializerMark.deserialize_all(CONNECTOR.connection(current_user).get_all_tracks.body)
+    @track_names = tracks.reduce([]) do |accu, track|
+      accu << track.name
     end
   end
 
@@ -37,6 +51,7 @@ class EventsController < ApplicationController
 
   def create
     @event = Event.new(event_params)
+    @event.track = params[:track]
     @event.users << current_user
     @event.group_id = params[:group_id]
     if @event.save

@@ -16,6 +16,9 @@
       <%= f.label :picture, "Picture"%>
       <%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png' %>
 
+      <%= f.label :Track %>
+      <%= select_tag :track, options_for_select(@track_names) %>
+
       <%= hidden_field_tag :group_id, params[:group_id] %>
 
       <%= f.submit "Create new Event", class: "btn btn-primary" %>

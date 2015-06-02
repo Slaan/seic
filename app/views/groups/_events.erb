@@ -12,6 +12,7 @@
       <th class="col-md-1"></th> <!-- col for pictures -->
       <th class="col-md-2">Name</th>
       <th class="col-md-2">Details</th>
+      <th class="col-md-2">Track</th>
       <th class="col-md-2">Action</th>
     </tr>
     </thead>
@@ -23,6 +24,7 @@
           <td><%= thumbnail(event) %></td>
           <td><%= link_to event.name, event_path(id: event.id) %></td>
           <td><%= event.details %></td>
+          <td><%= link_to event.track.to_s, track_path(track_id: event.track) %></td>
           <% unless event.is_member? current_user.id %>
               <td><%= link_to 'Join Event', join_event_path(event_id: event.id), class: "btn btn-success" %></td>
           <% else %>

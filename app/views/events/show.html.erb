@@ -26,19 +26,16 @@
       </div>
     </div>
   </div>
+  <% if @event.track %>
   <div class="col-md-9">
     <div class="panel panel-default">
       <div class="panel-heading">Track</div>
       <div class="panel-body">
-        <% if @event.track %>
-            <%= link_to 'Show track', track_path(track: @event.track), class: "btn btn-success" %>
-        <% else %>
-            <%= link_to 'Select track', tracks_path, class: "btn btn-success" %>
-        <% end %>
+        <%= link_to 'Show track', track_path(track: @event.track), class: "btn btn-success" %>
       </div>
     </div>
   </div>
-
+  <% end %>
 </div>
 
 <%= render "participants" %>

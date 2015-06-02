@@ -10,6 +10,7 @@ class Group < ActiveRecord::Base
   
   has_and_belongs_to_many :users
   has_many :group_messages, dependent: :destroy
+  has_many :events, dependent: :destroy
 
   search_scope :search do
     attributes :name

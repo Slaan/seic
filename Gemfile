@@ -26,6 +26,7 @@ gem 'sprockets-rails', '2.2.4'
 gem 'search_cop',              '1.0.6'
 group :development, :test do
   gem 'sqlite3',     '1.3.10'
+  gem 'thin'
   gem 'pry'
   gem 'pry-rails'
   gem 'pry-doc'

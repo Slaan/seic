@@ -74,12 +74,13 @@
     // Intitialize total distance of route
     var lengthInKm;
 
+   L.Icon.Default.imagePath = "https://s3.eu-central-1.amazonaws.com/seic-storage/public/images"
     // Get map itself
     // http://{s}.tiles.mapbox.com/v3/MapID/{z}/{x}/{y}.png
-    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> ' +
-      'contributors, ' + '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-      'Imagery � <a href="http://mapbox.com">Mapbox</a>',
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: 'Map data &copy; <a href="https://openstreetmap.org">OpenStreetMap</a> ' +
+      'contributors, ' + '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+      'Imagery � <a href="https://mapbox.com">Mapbox</a>',
       maxZoom: 18
     }).addTo(map);
 

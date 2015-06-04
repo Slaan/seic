@@ -7,17 +7,23 @@ class ConnectorMark
   if Rails.env.production?
     COMMUNITY_NAME = ENV.fetch('MARK_COMMUNITY_NAME')
     COMMUNITY_PASSWORD = ENV.fetch('MARK_USER_PASSWORD')
+    # Tokens are permanent for group mark
+    COMMUNITY_TOKEN = ENV.fetch('MARK_COMMUNITY_TOKEN')
   else
     COMMUNITY_NAME = 'Tindbike'
     COMMUNITY_PASSWORD = '1QfO9TWEpXbwPJIKOQPq'
+    # Tokens are permanent for group mark
+    COMMUNITY_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aW5kYmlrZSJ9.EZP2KljNuxOXO0uHG9T6Uo1yG-bbKsBRgy8Ak98-2jU'
   end
   
   attr_reader :connection
 
-  def initialize
-    community_connection = setup_community_connection
-    @community_token = login(community_connection)
-    @connection = setup_community_connection
+  def initialize(connection = nil)
+    if connection
+      @connection = connection
+    else
+      @connection = setup_community_connection
+    end
   end
 
   def setup_community_connection
@@ -26,7 +32,7 @@ class ConnectorMark
 
   def setup_connection(user_name, user_password)
     Faraday.new API_URL, :ssl => {:verify => false} do |builder|
-      builder.headers[:token] = @community_token if @community_token
+      builder.headers[:token] = COMMUNITY_TOKEN
       builder.use Faraday::Request::Retry
       builder.request :json
       builder.response :json, :content_type => /\bjson$/
@@ -40,16 +46,18 @@ class ConnectorMark
   end
 
   def connection(user)
-    @connection = setup_connection(user.username, user.password_digest)
-    self
+    connection = setup_connection(user.username, user.password_digest)
+    ConnectorMark.new(connection)
+  end
+
+  def connection(username, password)
+    connection = setup_connection(username, password)
+    ConnectorMark.new(connection)
   end
 
   def login(connection)
     connection.get('communities/' + COMMUNITY_NAME.downcase).body["token"]
   end
-
-  # first: login community(basic auth) => token
-  # => bei tracks und user aktionen: immer token mitschicken
 
   # Used to retrieve existing records
   def get(path, params = nil)
@@ -94,7 +102,7 @@ class ConnectorMark
     def update_user(username, old_user, new_user)
       #      binding.pry
       user = user_diff(old_user, new_user)
-      put("#{USERS_PATH}/#{username}",
+      put("#{USERS_PATH}/#{username.downcase}",
         user_to_hash(user))
     end
 

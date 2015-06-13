@@ -3,7 +3,7 @@ class TracksController < ApplicationController
   CONNECTOR = ConnectorFactory.connection
 
   def index
-    @tracks = JSON.generate(CONNECTOR.connection(current_user).get_tracks_of(current_user).body)
+    @tracks = JSON.generate(CONNECTOR.connection(current_user).get_tracks_of(user: current_user).body)
   end
 
   def show
@@ -16,7 +16,7 @@ class TracksController < ApplicationController
   def create
     data = params[:data]
     @track = Track.new(JSON.parse(data))
-    CONNECTOR.connection(current_user).create_track(@track)
+    CONNECTOR.connection(user: current_user).create_track(@track)
   end
 
   def delete

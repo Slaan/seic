@@ -18,14 +18,14 @@ module Connector
       builder.adapter Faraday.default_adapter
     end
   end
-
-  def connection(user)
-    connection = setup_connection(user.username, user.password_digest)
-    ConnectorMark.new(connection)
-  end
-
-  def connection(username, password)
-    connection = setup_connection(username, password)
+  
+  def connection(params)
+    if params[:user]
+      user = params[:user]
+      connection = setup_connection(user.username, user.password_digest)
+    elsif params[:username] and params[:password]
+      connection = setup_connection(params[:username], params[:password])
+    end
     ConnectorMark.new(connection)
   end
 

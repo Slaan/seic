@@ -21,8 +21,8 @@ class EventsController < ApplicationController
   end
 
   def get_tracks
-    tracks = TracksDeserializerMark.deserialize_all(CONNECTOR.connection(current_user).get_all_tracks.body)
-    @track_names = tracks.reduce([]) do |accu, track|
+    @tracks = TracksDeserializerMark.deserialize_all(CONNECTOR.connection(user: current_user).get_all_tracks.body)
+    @track_names = @tracks.reduce([]) do |accu, track|
       accu << track.name
     end
   end

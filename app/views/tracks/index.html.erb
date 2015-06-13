@@ -34,7 +34,11 @@
     }
   </style>
 
+
+
+
   <script type="application/javascript">
+
 
     // initial view = Hamburg
     var map = L.map('map').setView([53.5502099, 9.9993636], 9);
@@ -119,13 +123,39 @@
           });
     }
 
+    //get data (waypoints)
     var sel = document.getElementById('name');
     sel.onchange = function() {
-      var namee = document.getElementById('name').value;
-      console.log(namee);
+      var name = document.getElementById('name').value;
+      console.log(name);
+
+
+
+//      console.log $('#tracktrack').data('trackData');
+      $.post("/get_track", {id: JSON.stringify(name)}).done(function() {
+
+      });
+//      $.ajax({
+//        url: ("/track),
+//        type: "POST"
+//        success: function (result) {
+//
+//          var waypoints = result.waypoints;
+//          var arrayWaypoints = [];
+//
+//          waypoints.forEach(function(waypoint) {
+//          var currentLat = waypoint.latitude;
+//          var currentLng = waypoint.longitude;
+//          arrayWaypoints.push(L.latLng(currentLat, currentLng));
+//          });
+
+//        }
+//      })
 
 
     }
 
   </script>
+
+  <%= content_tag "div", id: "tracktrack", data: {trackData: @track} %>
 </div>

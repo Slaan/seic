@@ -16,8 +16,6 @@ class ConnectorMark
     COMMUNITY_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aW5kYmlrZSJ9.EZP2KljNuxOXO0uHG9T6Uo1yG-bbKsBRgy8Ak98-2jU'
   end
   
-  attr_reader :connection
-
   def initialize(connection = nil)
     if connection
       @connection = connection

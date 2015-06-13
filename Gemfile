@@ -21,6 +21,7 @@ gem 'rails-html-sanitizer',    '1.0.1'
 gem 'sdoc',                    '0.4.0', group: :doc
 gem 'faraday', '~> 0.9.1'
 gem 'faraday_middleware', '~> 0.9.1'
+gem 'rgeo-geojson', '~> 0.3.1'
 gem 'sprockets', '3.0.2'
 gem 'sprockets-rails', '2.2.4'
 gem 'search_cop',              '1.0.6'

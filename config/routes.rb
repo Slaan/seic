@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   get 'search' => 'main_search#index'
   get 'messages' => 'users#messages'
   post 'create_track' => 'tracks#create'
+  post 'get_track' => 'tracks#get'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

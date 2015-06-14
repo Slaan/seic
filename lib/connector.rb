@@ -7,6 +7,8 @@ module Connector
   def setup_connection(user_name, user_password)
     Faraday.new self.class::API_URL, :ssl => {:verify => false} do |builder|
       builder.headers[:token] = self.class::COMMUNITY_TOKEN
+      builder.options.timeout = 5
+      builder.options.open_timeout = 3
       builder.use Faraday::Request::Retry
       builder.request :json
       builder.response :json, :content_type => /\bjson$/

@@ -1,17 +1,17 @@
-class Track
+class Track < ActiveRecord::Base
 
   attr_accessor :name, :description, :tags, :waypoints
+  serialize :tags, Array
 
-  #WAYPOINTS = {type: "Feature", geometry: { type: "Point", coordinates: [125.6, 10.1] }, properties: { name: "Dinagat Islands" } }
-
-  def initialize(params = nil)
+  def self.build_from_hash(params = nil)
+    track = new
     if params
-      @name = params["name"]
-      @description = params["description"]
-      @waypoints = params["waypoints"]
-      #@waypoints = WAYPOINTS
-      @tags = params["keywords"]
+      track.name = params["name"]
+      track.description = params["description"]
+      track.waypoints = params["waypoints"]
+      track.tags = params["keywords"]
     end
+    track
   end
 
 end

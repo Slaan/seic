@@ -1,7 +1,7 @@
 class TracksDeserializerTeam6
 
   def self.deserialize(track)
-    Track.new("name" => track["label"],
+    Track.build_from_hash("name" => track["label"],
       "description" => "",
       "keywords" => track["tags"],
       "waypoints" => GeojsonConverter.to_geojson(track["streckenpunkte"]))

@@ -15,7 +15,7 @@ class TracksController < ApplicationController
   
   def create
     data = params[:data]
-    @track = Track.new(JSON.parse(data))
+    @track = Track.build_from_hash(JSON.parse(data))
     CONNECTOR.connection(user: current_user).create_track(@track)
   end
 

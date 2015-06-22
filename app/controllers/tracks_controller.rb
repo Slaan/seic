@@ -15,7 +15,7 @@ class TracksController < ApplicationController
   def new
     @track = Track.new
   end
-  
+
   def create
     data = params[:data]
     @track = Track.new(JSON.parse(data))
@@ -32,14 +32,16 @@ class TracksController < ApplicationController
   end
 
   def get
-    id1 = params[:id]
-    id = id1.split("\"")[1]
+    id = params[:id]
     p id
 
     @track = TracksDeserializerMark.deserialize(CONNECTOR.connection(user: current_user).get_track(id).body)
     puts "@track"
     p @track
-    redirect_to :action => 'index'
+
+    respond_to do |format|
+      format.js {}
+    end
   end
 
 end

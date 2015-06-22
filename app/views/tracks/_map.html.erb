@@ -1,0 +1,143 @@
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css"/>
+<link rel="stylesheet" href="/assets/stylesheets/leaflet.css"/>
+<link rel="stylesheet" href="/leaflet-routing-machine-2.3.0/leaflet-routing-machine.css"/>
+
+
+<div id="map-side" class="row col-md-12">
+  <%= puts "hallo-pupsi" %>
+  <%= p @track %>
+  <div class="panel panel-default">
+    <div class="panel-heading">Map</div>
+    <div class="panel-body">
+      <div class="col-md-3 col-md-offset-0" >
+        <label for="name">Name</label>
+        <%= select_tag 'track_name', options_for_select(@tracks.collect{ |t| [t.name, t.name] }), :include_blank => true %>
+        <label for="description">Description</label>
+        <input type="text" name="description" id="description">
+        <label for="keywords">Keywords</label>
+        <span style="font-size: 10px;">Example: Wald Strand Berg</span>
+        <input type="text" name="keywords" id="keywords">
+      </div>
+      <div id="map"></div>
+    </div>
+  </div>
+
+
+  <style>
+    div#map {
+      float: left;
+      height: 550px;
+      width: 720px;
+    }
+  </style>
+
+
+
+
+  <script type="application/javascript">
+
+
+    // initial view = Hamburg
+    var map = L.map('map').setView([53.5502099, 9.9993636], 9);
+
+
+    // Create pop-up for setting waypoints in map
+    function createButton(label, container) {
+      var btn = L.DomUtil.create('button', '', container);
+      btn.setAttribute('type', 'button');
+      btn.innerHTML = label;
+      return btn;
+    }
+
+    // Add start and destination waypoint from clicking on map
+    map.on('click', function(e) {
+      var container = L.DomUtil.create('div'),
+          startBtn = createButton('Start from this location', container),
+          destBtn = createButton('Go to this location', container);
+
+      L.popup()
+          .setContent(container)
+          .setLatLng(e.latlng)
+          .openOn(map);
+
+      L.DomEvent.on(startBtn, 'click', function() {
+        control.spliceWaypoints(0, 1, e.latlng);
+        map.closePopup();
+      });
+
+      L.DomEvent.on(destBtn, 'click', function() {
+        control.spliceWaypoints(control.getWaypoints().length - 1, 1, e.latlng);
+        map.closePopup();
+      });
+    });
+
+    // Intitialize total distance of route
+    var lengthInKm;
+
+    // Get map itself
+    // http://{s}.tiles.mapbox.com/v3/MapID/{z}/{x}/{y}.png
+    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> ' +
+      'contributors, ' + '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+      'Imagery <a href="http://mapbox.com">Mapbox</a>',
+      maxZoom: 18
+    }).addTo(map);
+
+    // Add basic routing control
+    var control = L.Routing.control({
+      routeWhileDragging: true,
+      geocoder: L.Control.Geocoder.nominatim(),
+      reverseWaypoints: true,
+      fitSelectedRoutes: 'truthy',
+      // Set GraphHopper as router -- IMPORTANT: Only 500 queries per day for free...!
+      router: L.Routing.graphHopper('0a9d51e1-9fa5-4570-99f6-c1c15b4ef542', {"urlParameters": {'vehicle': "bike"}})
+    });
+
+    control.addTo(map);
+
+    // Get distance from map, convert to km
+    control.addEventListener("routesfound", function (route) {
+      lengthInKm = route.routes[0].summary.totalDistance / 1000;
+    });
+
+
+    $('#track_name').change( function() {
+      $.post("/get_track", {id: $('#track_name').val()}).done(function(data) {
+        console.log(data);
+
+        var waypoints= data["waypoints"];
+        var arrayWaypoints = [];
+
+        var cordinates = JSON.parse(waypoints).features;
+
+        cordinates.forEach(function(d){
+          var currentLng =  d.geometry.coordinates[0];
+          var currentLat =  d.geometry.coordinates[1];
+          arrayWaypoints.push(L.latLng(currentLat, currentLng));
+        });
+
+        // Add cordinates to map
+        console.log(arrayWaypoints);
+        control.setWaypoints(arrayWaypoints);
+
+        // Add description to form
+        var description = data.description;
+        document.getElementById("description").value = description;
+
+        // Add keywords/tags to form
+        var keywords = data.tags;
+        var tags = "";
+        keywords.forEach(function(tag){
+          tags +=  " " + tag;
+        });
+        document.getElementById("keywords").value = tags;
+
+
+      });
+    })
+
+
+  </script>
+
+
+</div>

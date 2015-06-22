@@ -40,8 +40,8 @@ class TracksController < ApplicationController
     p @track
 
     respond_to do |format|
-      format.js {}
+      format.json { render :json => @track }
     end
-  end
 
+  end
 end

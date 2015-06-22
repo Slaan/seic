@@ -9,12 +9,7 @@
     <div class="panel-body">
       <div class="col-md-3 col-md-offset-0" >
         <label for="name">Name</label>
-        <select name="name" id="name">
-          <option value=""></option>
-          <% @tracks.each do |track| %>
-            <option value="<%= track.name %>"><%= track.name %></option>
-          <% end %>
-        </select>
+        <%= select_tag 'track_name', options_for_select(@tracks.collect{ |t| [t.name, t.name] }), :include_blank => true %>
         <label for="description">Description</label>
         <input type="text" name="description" id="description">
         <label for="keywords">Keywords</label>
@@ -27,11 +22,11 @@
 
 
   <style>
-    div#map {
-      float: left;
-      height: 550px;
-      width: 720px;
-    }
+   div#map {
+     float: left;
+     height: 550px;
+     width: 720px;
+   }
   </style>
 
 
@@ -123,39 +118,15 @@
           });
     }
 
-    //get data (waypoints)
-    var sel = document.getElementById('name');
-    sel.onchange = function() {
-      var name = document.getElementById('name').value;
-      console.log(name);
+   $('#track_name').change( function() {
+     $.post("/get_track", {id: $('#track_name').val()}).done(function() {
+       console.log(document.getElementById("tracktrack").data('trackData'));
+     });
+   });
 
-
-
-//      console.log $('#tracktrack').data('trackData');
-      $.post("/get_track", {id: JSON.stringify(name)}).done(function() {
-
-      });
-//      $.ajax({
-//        url: ("/track),
-//        type: "POST"
-//        success: function (result) {
-//
-//          var waypoints = result.waypoints;
-//          var arrayWaypoints = [];
-//
-//          waypoints.forEach(function(waypoint) {
-//          var currentLat = waypoint.latitude;
-//          var currentLng = waypoint.longitude;
-//          arrayWaypoints.push(L.latLng(currentLat, currentLng));
-//          });
-
-//        }
-//      })
-
-
-    }
 
   </script>
 
   <%= content_tag "div", id: "tracktrack", data: {trackData: @track} %>
+  <%= content_tag(:div, content_tag(:p, data: @track, id: "tr"), class: "strong" ) %>
 </div>

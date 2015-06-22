@@ -15,7 +15,7 @@ class TracksController < ApplicationController
   def create
     data = params[:data]
     @track = Track.new(JSON.parse(data))
-    CONNECTOR.connection(current_user).create_track(@track)
+    CONNECTOR.connection(user: current_user).create_track(@track)
   end
 
   def delete
@@ -28,16 +28,16 @@ class TracksController < ApplicationController
   end
 
   def get
-    id1 = params[:id]
-    id = id1.split("\"")[1]
+    id = params[:id]
     p id
-    @tracks = TracksDeserializerMark.deserialize_all(CONNECTOR.connection(current_user).get_tracks_of(current_user).body)
-    p @tracks
 
-    @track = TracksDeserializerMark.deserialize(CONNECTOR.connection(current_user).get_track(id).body)
-    # puts "@track"
-    # p @track
+    @track = TracksDeserializerMark.deserialize(CONNECTOR.connection(user: current_user).get_track(id).body)
+    puts "@track"
+    p @track
 
+    respond_to do |format|
+      format.js {}
+    end
   end
 
 end

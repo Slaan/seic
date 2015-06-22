@@ -7,77 +7,23 @@ class ConnectorMark
   if Rails.env.production?
     COMMUNITY_NAME = ENV.fetch('MARK_COMMUNITY_NAME')
     COMMUNITY_PASSWORD = ENV.fetch('MARK_USER_PASSWORD')
+    # Tokens are permanent for group mark
+    COMMUNITY_TOKEN = ENV.fetch('MARK_COMMUNITY_TOKEN')
   else
     COMMUNITY_NAME = 'Tindbike'
     COMMUNITY_PASSWORD = '1QfO9TWEpXbwPJIKOQPq'
+    # Tokens are permanent for group mark
+    COMMUNITY_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aW5kYmlrZSJ9.EZP2KljNuxOXO0uHG9T6Uo1yG-bbKsBRgy8Ak98-2jU'
   end
   
-  attr_reader :connection
-
-  def initialize
-    community_connection = setup_community_connection
-    @community_token = login(community_connection)
-    @connection = setup_community_connection
-  end
-
-  def setup_community_connection
-    setup_connection(COMMUNITY_NAME, COMMUNITY_PASSWORD)
-  end
-
-  def setup_connection(user_name, user_password)
-    Faraday.new API_URL, :ssl => {:verify => false} do |builder|
-      builder.headers[:token] = @community_token if @community_token
-      builder.use Faraday::Request::Retry
-      builder.request :json
-      builder.response :json, :content_type => /\bjson$/
-      builder.use :instrumentation
-      builder.use FaradayMiddleware::ParseJson, content_type: 'application/json'
-      builder.use Faraday::Response::Logger, Logger.new('faraday.log')
-      builder.use Faraday::Request::BasicAuthentication, user_name, user_password
-      builder.use Faraday::Response::Logger
-      builder.adapter Faraday.default_adapter
+  def initialize(connection = nil)
+    if connection
+      @connection = connection
+    else
+      @connection = setup_community_connection
     end
   end
 
-  def connection(user)
-    @connection = setup_connection(user.username, user.password_digest)
-    self
-  end
-
-  def login(connection)
-    connection.get('communities/' + COMMUNITY_NAME.downcase).body["token"]
-  end
-
-  # first: login community(basic auth) => token
-  # => bei tracks und user aktionen: immer token mitschicken
-
-  # Used to retrieve existing records
-  def get(path, params = nil)
-    @connection.get(path) do |request|
-      request.params = params if params
-    end
-  end
-
-  # Used to create new records
-  def post(path, params = nil)
-    @connection.post(path) do |request|
-      request.body = JSON.generate(params) if params.kind_of? Hash
-      request.body = params.to_json if params.kind_of? ActiveRecord::Base
-      p "Posting body: #{request.body}"
-    end
-  end
-
-  # Used to update existing records
-  def put(path, params = nil)
-    @connection.put(path) do |request|
-      request.body = JSON.generate(params) if params
-      p "Put body: #{request.body}"
-    end
-  end
-
-  def delete(path)
-    @connection.delete(path)
-  end
 
   module ApiMethods
 
@@ -94,7 +40,7 @@ class ConnectorMark
     def update_user(username, old_user, new_user)
       #      binding.pry
       user = user_diff(old_user, new_user)
-      put("#{USERS_PATH}/#{username}",
+      put("#{USERS_PATH}/#{username.downcase}",
         user_to_hash(user))
     end
 
@@ -160,6 +106,7 @@ class ConnectorMark
     end
   end
 
+  include Connector
   include ApiMethods
 end
 

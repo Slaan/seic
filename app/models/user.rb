@@ -9,7 +9,12 @@ class User < ActiveRecord::Base
   validates :name, presence: true
   validates :email, presence: true
   validates :name,  presence: true, length: { maximum: 50 }
-  validates :username, presence: true, length: { maximum: 20 }
+  ONLY_LETTERS_AND_DIGITS_REGEX = /\A[0-9a-zA-Z]*\z/
+  validates :username, presence: true,
+                       length: { maximum: 20 },
+                       format: { with: ONLY_LETTERS_AND_DIGITS_REGEX,
+                                 message: "only letters and digits allowed" },
+                       uniqueness: { case_sensitive: false }
   validates :password_digest, presence: true
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
   validates :email, presence: true,
@@ -37,12 +42,12 @@ class User < ActiveRecord::Base
 
   private
 
-    # Validates the size of an uploaded picture.
-    def picture_size
-      if picture.size > 5.megabytes
-        errors.add(:picture, "should be less than 5MB")
-      end
+  # Validates the size of an uploaded picture.
+  def picture_size
+    if picture.size > 5.megabytes
+      errors.add(:picture, "should be less than 5MB")
     end
+  end
   
 end
 

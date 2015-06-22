@@ -131,26 +131,12 @@
 
 
 
-//      console.log $('#tracktrack').data('trackData');
+
       $.post("/get_track", {id: JSON.stringify(name)}).done(function() {
-
+        console.log(document.getElementById("tracktrack"));
+//        console.log $('#tracktrack').data('trackData');
       });
-//      $.ajax({
-//        url: ("/track),
-//        type: "POST"
-//        success: function (result) {
-//
-//          var waypoints = result.waypoints;
-//          var arrayWaypoints = [];
-//
-//          waypoints.forEach(function(waypoint) {
-//          var currentLat = waypoint.latitude;
-//          var currentLng = waypoint.longitude;
-//          arrayWaypoints.push(L.latLng(currentLat, currentLng));
-//          });
 
-//        }
-//      })
 
 
     }
@@ -158,4 +144,5 @@
   </script>
 
   <%= content_tag "div", id: "tracktrack", data: {trackData: @track} %>
+  <%= content_tag(:div, content_tag(:p, data: @track, id: "tr"), class: "strong" ) %>
 </div>

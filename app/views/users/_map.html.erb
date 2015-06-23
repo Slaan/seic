@@ -15,7 +15,7 @@
         <label for="description">Description</label>
         <input type="text" name="description" id="description">
         <label for="keywords">Keywords</label>
-        <span style="font-size: 10px;">Example: Wald Strand Berg</span>
+        <span style="font-size: 10px;">Example: Wald, Strand, Berg</span>
         <input type="text" name="keywords" id="keywords">
         <button class="save-btn" onclick="exportRoute()">Save</button>
         <br><br>
@@ -155,7 +155,7 @@
 
       // Set keywords of the route
       var tmp = document.getElementById("keywords").value;
-      var routeKeywords = tmp.split(" ");
+      var routeKeywords = tmp.split(", ");
 
       if(routeKeywords === "") {
         window.alert("Die Route kann ohne Keyword nicht gespeichert werden.");

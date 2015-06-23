@@ -3,7 +3,6 @@ class DualConnector
   def initialize
     @connector_mark = ConnectorMark.new
     @connector_team6 = ConnectorTeam6.new
-    @mark_up = true
   end
 
 
@@ -28,10 +27,19 @@ class DualConnector
     (tracks_mark or []) + (tracks_team6 or []) + Track.all
   end
 
+  def get_track(name)
+    track_from_db = Track.find_by(name: name)
+    return track_from_db if track_from_db
+    track_from_mark = @connector_mark.get_track(name)
+    return TracksDeserializerMark.deserialize(track_from_mark.body) if track_from_mark and (track_from_mark.status == 200)
+    nil
+  end
+
   def get_tracks_of(user)
     tracks_from_mark = @connector_mark.get_tracks_of(user)
-    tracks_from_mark = tracks_from_mark.body if tracks_from_mark
-    tracks_from_db = Track.all.map(&:waypoints)
+    tracks_from_mark = nil unless (tracks_from_mark and (tracks_from_mark.status == 200))
+    tracks_from_mark = TracksDeserializerMark.deserialize_all(tracks_from_mark.body) if tracks_from_mark
+    tracks_from_db = Track.all
     (tracks_from_mark or []) + tracks_from_db
   end
 

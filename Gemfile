@@ -35,6 +35,7 @@ group :development, :test do
   gem 'better_errors', '2.1.1'
   gem 'binding_of_caller', '0.7.2'
 #  gem 'web-console', '2.0.0.beta3'
+  gem 'rubocop'
   gem 'spring',      '1.1.3'
 end
 

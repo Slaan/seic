@@ -49,6 +49,8 @@
       return btn;
     }
 
+   L.Icon.Default.imagePath = "https://s3.eu-central-1.amazonaws.com/seic-storage/public/images"
+
     // Add start and destination waypoint from clicking on map
     map.on('click', function(e) {
       var container = L.DomUtil.create('div'),

@@ -2,7 +2,7 @@ class TracksController < ApplicationController
   CONNECTOR = ConnectorFactory.connection
 
   def index
-    @tracks = TracksDeserializerMark.deserialize_all(CONNECTOR.connection(current_user).get_tracks_of(current_user).body)
+    @tracks = CONNECTOR.connection(user: current_user).get_tracks_of(current_user)
   end
 
   def show
@@ -11,11 +11,11 @@ class TracksController < ApplicationController
   def new
     @track = Track.new
   end
-  
+
   def create
     data = params[:data]
-    @track = Track.new(JSON.parse(data))
-    CONNECTOR.connection(user: current_user).create_track(@track)
+    @track = Track.build_from_hash(JSON.parse(data))
+    CONNECTOR.connection(user: current_user).create_track(@track, current_user)
   end
 
   def delete
@@ -27,11 +27,16 @@ class TracksController < ApplicationController
   def edit
   end
 
+  def move_to_backend
+    CONNECTOR.move_tracks_to_backend
+    redirect_to tracks_path
+  end
+
   def get
     id = params[:id]
     p id
 
-    @track = TracksDeserializerMark.deserialize(CONNECTOR.connection(user: current_user).get_track(id).body)
+    @track = CONNECTOR.connection(user: current_user).get_track(id)
     puts "@track"
     p @track
 

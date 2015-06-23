@@ -1,7 +1,7 @@
 class TracksDeserializerMark
 
   def self.deserialize(track)
-    Track.new("name" => track["track_name"],
+    Track.build_from_hash("name" => track["track_name"],
               "description" => track["track_description"],
               "keywords" => track["track_keywords"],
               "waypoints" => track["track_geojson"])

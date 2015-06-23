@@ -1,5 +1,4 @@
 class UsersController < ApplicationController
-
   before_action :logged_in_user, except: [:new, :create]
   before_action :set_user, only: [:update, :show, :edit, :messages]
 
@@ -17,7 +16,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.validate and
-        CONNECTOR.create_user(@user).status == 201 and
+       CONNECTOR.create_user(@user).status == 201 and
         @user.save
       log_in @user
       flash[:success] = "Welcome to Tindbike!"
@@ -25,7 +24,6 @@ class UsersController < ApplicationController
     else
       render 'new'
     end
-    #debugger
   end
 
   def edit

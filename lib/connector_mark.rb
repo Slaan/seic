@@ -15,14 +15,29 @@ class ConnectorMark
     # Tokens are permanent for group mark
     COMMUNITY_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aW5kYmlrZSJ9.EZP2KljNuxOXO0uHG9T6Uo1yG-bbKsBRgy8Ak98-2jU'
   end
-  
-  def initialize(connection = nil)
+
+  attr_accessor :community_token
+
+  def initialize(connection = nil, up = true, down_since = nil)
+    @up = up
+    @down_since = down_since
     if connection
       @connection = connection
     else
       @connection = setup_community_connection
     end
   end
+
+  def connection(params)
+    if params[:user]
+      user = params[:user]
+      connection = setup_connection(user.username, user.password_digest)
+    elsif params[:username] and params[:password]
+      connection = setup_connection(params[:username], params[:password])
+    end
+    ConnectorMark.new(connection, @up, @down_since)
+  end
+
 
 
   module ApiMethods
@@ -70,19 +85,12 @@ class ConnectorMark
 
     def create_track(track)
       post(TRACKS_PATH,
-        track_to_hash(track))
+        track.to_hash)
     end
 
     def update_track(old_name, track)
       put("#{TRACKS_PATH}/#{old_name.downcase}",
-        track_to_hash(track))
-    end
-
-    def track_to_hash(track)
-      {track_name: track.name,
-        track_description: track.description,
-        track_keywords: track.tags,
-        track_geojson: track.waypoints}
+        track.to_hash)
     end
 
     def delete_track(track)
@@ -109,4 +117,3 @@ class ConnectorMark
   include Connector
   include ApiMethods
 end
-

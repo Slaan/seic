@@ -1,7 +1,6 @@
 class Track < ActiveRecord::Base
-
-  attr_accessor :name, :description, :tags, :waypoints
   serialize :tags, Array
+  belongs_to :user
 
   def self.build_from_hash(params = nil)
     track = new
@@ -14,4 +13,10 @@ class Track < ActiveRecord::Base
     track
   end
 
+  def to_hash
+    {track_name: name,
+      track_description: description,
+      track_keywords: tags,
+      track_geojson: waypoints }
+  end
 end

@@ -1,7 +1,5 @@
 class ConnectorFactory
-
   def self.connection
-    ConnectorMark.new
+    @connector ||= DualConnector.new
   end
 end
-

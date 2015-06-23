@@ -15,33 +15,16 @@ class ConnectorMark
     # Tokens are permanent for group mark
     COMMUNITY_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aW5kYmlrZSJ9.EZP2KljNuxOXO0uHG9T6Uo1yG-bbKsBRgy8Ak98-2jU'
   end
-  
-  attr_reader :connection
 
-  def initialize(connection = nil)
+  attr_accessor :community_token
+
+  def initialize(connection = nil, up = true, down_since = nil)
+    @up = up
+    @down_since = down_since
     if connection
       @connection = connection
     else
       @connection = setup_community_connection
-    end
-  end
-
-  def setup_community_connection
-    setup_connection(COMMUNITY_NAME, COMMUNITY_PASSWORD)
-  end
-
-  def setup_connection(user_name, user_password)
-    Faraday.new API_URL, :ssl => {:verify => false} do |builder|
-      builder.headers[:token] = COMMUNITY_TOKEN
-      builder.use Faraday::Request::Retry
-      builder.request :json
-      builder.response :json, :content_type => /\bjson$/
-      builder.use :instrumentation
-      builder.use FaradayMiddleware::ParseJson, content_type: 'application/json'
-      builder.use Faraday::Response::Logger, Logger.new('faraday.log')
-      builder.use Faraday::Request::BasicAuthentication, user_name, user_password
-      builder.use Faraday::Response::Logger
-      builder.adapter Faraday.default_adapter
     end
   end
 
@@ -52,40 +35,10 @@ class ConnectorMark
     elsif params[:username] and params[:password]
       connection = setup_connection(params[:username], params[:password])
     end
-    ConnectorMark.new(connection)
+    ConnectorMark.new(connection, @up, @down_since)
   end
 
-  def login(connection)
-    connection.get('communities/' + COMMUNITY_NAME.downcase).body["token"]
-  end
 
-  # Used to retrieve existing records
-  def get(path, params = nil)
-    @connection.get(path) do |request|
-      request.params = params if params
-    end
-  end
-
-  # Used to create new records
-  def post(path, params = nil)
-    @connection.post(path) do |request|
-      request.body = JSON.generate(params) if params.kind_of? Hash
-      request.body = params.to_json if params.kind_of? ActiveRecord::Base
-      p "Posting body: #{request.body}"
-    end
-  end
-
-  # Used to update existing records
-  def put(path, params = nil)
-    @connection.put(path) do |request|
-      request.body = JSON.generate(params) if params
-      p "Put body: #{request.body}"
-    end
-  end
-
-  def delete(path)
-    @connection.delete(path)
-  end
 
   module ApiMethods
 
@@ -132,19 +85,12 @@ class ConnectorMark
 
     def create_track(track)
       post(TRACKS_PATH,
-        track_to_hash(track))
+        track.to_hash)
     end
 
     def update_track(old_name, track)
       put("#{TRACKS_PATH}/#{old_name.downcase}",
-        track_to_hash(track))
-    end
-
-    def track_to_hash(track)
-      {track_name: track.name,
-        track_description: track.description,
-        track_keywords: track.tags,
-        track_geojson: track.waypoints}
+        track.to_hash)
     end
 
     def delete_track(track)
@@ -168,6 +114,6 @@ class ConnectorMark
     end
   end
 
+  include Connector
   include ApiMethods
 end
-

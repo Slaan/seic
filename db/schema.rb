@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150602020447) do
+ActiveRecord::Schema.define(version: 20150615164505) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "street"
@@ -71,6 +71,16 @@ ActiveRecord::Schema.define(version: 20150602020447) do
 
   add_index "groups_users", ["group_id", "user_id"], name: "index_groups_users_on_group_id_and_user_id"
   add_index "groups_users", ["user_id", "group_id"], name: "index_groups_users_on_user_id_and_group_id"
+
+  create_table "tracks", force: :cascade do |t|
+    t.string  "name"
+    t.string  "description"
+    t.string  "waypoints"
+    t.string  "tags",        default: "--- []\n"
+    t.integer "user_id"
+  end
+
+  add_index "tracks", ["user_id"], name: "index_tracks_on_user_id"
 
   create_table "user_messages", force: :cascade do |t|
     t.integer  "reciever_id"

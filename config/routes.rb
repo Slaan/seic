@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   resources :groups
   resources :group_messages, only: [:index, :new, :create, :destroy]
   resources :events, except: [:index]
-  
+
   root 'static_pages#home'
   get 'help'    => 'static_pages#help'
   get 'about'   => 'static_pages#about'
@@ -28,6 +28,8 @@ Rails.application.routes.draw do
   get 'search' => 'main_search#index'
   get 'messages' => 'users#messages'
   post 'create_track' => 'tracks#create'
+  post 'get_track' => 'tracks#get'
+  get 'move_tracks' => 'tracks#move_to_backend'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

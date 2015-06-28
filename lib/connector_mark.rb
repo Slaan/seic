@@ -3,7 +3,7 @@ require 'faraday_middleware'
 
 class ConnectorMark
 
-  API_URL = 'https://trackyourtracksFALSE.eu-gb.mybluemix.net/api'
+  API_URL = 'https://trackyourtracks.eu-gb.mybluemix.net/api'
   if Rails.env.production?
     COMMUNITY_NAME = ENV.fetch('MARK_COMMUNITY_NAME')
     COMMUNITY_PASSWORD = ENV.fetch('MARK_USER_PASSWORD')

@@ -1,10 +1,14 @@
 class User < ActiveRecord::Base
   include SearchCop
 
+  attr_accessor :errors_backend
+
+  after_initialize :init
+
   after_validation { self.errors.messages.delete(:password_digest) }
 
   mount_uploader :picture, PictureUploader
-  
+
   before_save { self.email = email.downcase }
   validates :name, presence: true
   validates :email, presence: true
@@ -28,7 +32,7 @@ class User < ActiveRecord::Base
   search_scope :search do
     attributes :name, :first_name, :username
   end
-  
+
   belongs_to :address
   has_and_belongs_to_many :groups
   has_and_belongs_to_many :events
@@ -43,12 +47,15 @@ class User < ActiveRecord::Base
 
   private
 
+  def init
+    @errors_backend = []
+  end
+
   # Validates the size of an uploaded picture.
   def picture_size
     if picture.size > 5.megabytes
       errors.add(:picture, "should be less than 5MB")
     end
   end
-  
-end
 
+end

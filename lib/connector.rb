@@ -33,7 +33,7 @@ module Connector
     response = @connection.get(path) do |request|
       request.params = params if (params and request)
     end
-    up?(response)
+    check_up?(response)
   end
 
   # Used to create new records
@@ -44,7 +44,7 @@ module Connector
       request.body = params.to_json if params.kind_of? ActiveRecord::Base
       p "Posting body: #{request.body}"
     end
-    up?(response)
+    check_up?(response)
   end
 
   # Used to update existing records
@@ -54,21 +54,25 @@ module Connector
       request.body = JSON.generate(params) if params
       p "Put body: #{request.body}"
     end
-    up?(response)
+    check_up?(response)
   end
 
   def delete(path)
     return unless try_connection?
     response = @connection.delete(path)
-    up?(response)
+    check_up?(response)
   end
 
-  def up?(response)
+  def check_up?(response)
     if response
       response
     else
       set_down
     end
+  end
+
+  def up?
+    @up
   end
 
   def try_connection?

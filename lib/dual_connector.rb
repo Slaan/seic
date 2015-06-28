@@ -1,5 +1,9 @@
 class DualConnector
 
+  attr_reader :response
+
+  ERROR_DOWN = "We're connectivity issues with our backend, so %{function} was temporarily disabled.<br/> Please try again in a few minutes.".html_safe
+
   def initialize
     @connector_mark = ConnectorMark.new
     @connector_team6 = ConnectorTeam6.new
@@ -12,11 +16,27 @@ class DualConnector
   end
 
   def create_user(user)
-    @connector_mark.create_user(user)
+    @response = @connector_mark.create_user(user)
+    if @response
+      return true if @response.status == 201
+      user.errors_backend << { text: ERROR_DOWN % { function: "registration" } } if @response.status == 404
+      false
+    else
+      user.errors_backend << { text: ERROR_DOWN % { function: "registration" } }
+      false
+    end
   end
 
   def update_user(username, old_user, new_user)
-    @connector_mark.update_user(username, old_user, new_user)
+    @response = @connector_mark.update_user(username, old_user, new_user)
+    if @response
+      return true if @response.status == 200
+      user.errors_backend << { text: ERROR_DOWN % { function: "updating users" } } if @response.status == 404
+      false
+    else
+      user.errors_backend << { text: ERROR_DOWN % { function: "updating users" } }
+      false
+    end
   end
 
   def get_all_tracks
@@ -69,6 +89,14 @@ class DualConnector
         break
       end
     end
+  end
+
+  def mark_up?
+    @connector_mark.up?
+  end
+
+  def team6_up?
+    @connector_team6.up?
   end
 
   private

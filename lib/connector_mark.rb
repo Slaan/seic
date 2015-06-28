@@ -3,7 +3,7 @@ require 'faraday_middleware'
 
 class ConnectorMark
 
-  API_URL = 'https://trackyourtracks.eu-gb.mybluemix.net/api'
+  API_URL = 'https://trackyourtracksFALSE.eu-gb.mybluemix.net/api'
   if Rails.env.production?
     COMMUNITY_NAME = ENV.fetch('MARK_COMMUNITY_NAME')
     COMMUNITY_PASSWORD = ENV.fetch('MARK_USER_PASSWORD')
@@ -53,7 +53,6 @@ class ConnectorMark
     end
 
     def update_user(username, old_user, new_user)
-      #      binding.pry
       user = user_diff(old_user, new_user)
       put("#{USERS_PATH}/#{username.downcase}",
         user_to_hash(user))

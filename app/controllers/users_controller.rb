@@ -16,12 +16,13 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.validate and
-       CONNECTOR.create_user(@user).status == 201 and
+       CONNECTOR.create_user(@user) and
         @user.save
       log_in @user
       flash[:success] = "Welcome to Tindbike!"
       redirect_to @user
     else
+      flash[:danger] = @user.errors_backend.map{ |error| error[:text] }.join("</br>").html_safe
       render 'new'
     end
   end
@@ -39,7 +40,7 @@ class UsersController < ApplicationController
       old_user = @user.dup
       @user.assign_attributes(user_params)
       if @user.validate and
-          CONNECTOR.connection(old_user).update_user(old_user.username, old_user, @user).status == 200 and
+          CONNECTOR.connection(old_user).update_user(old_user.username, old_user, @user) and
           @user.save
         format.html { redirect_to @user }
         flash[:success] = 'User was successfully updated.'

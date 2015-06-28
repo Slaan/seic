@@ -126,10 +126,7 @@
 
         // Add keywords/tags to form
         var keywords = data.tags;
-        var tags = "";
-        keywords.forEach(function(tag){
-          tags +=  " " + tag;
-        });
+        var tags = keywords.join(", ");
         document.getElementById("keywords").value = tags;
 
 

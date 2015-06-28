@@ -65,7 +65,7 @@ class DualConnector
 
   def create_track(track, current_user)
     response = @connector_mark.create_track(track)
-    unless response
+    unless response and response.status == 201
       track.user = current_user
       track.save
     end

@@ -1,0 +1,48 @@
+Woher Geld:
+- Email Marketing
+- Werbung
+-- revenue per thousand impressions (RMP) (~2$ for Sport)
+
+- Affiliate Programm
+- Premium Content
+
+Seitenaufrufe:
+10/visit
+6visits/month
+=
+60pageviews/month/user
+-> 12cent/user/month
+
+
+Websitekosten:
+0.2cent/user
+3.9cent/user @Mark Stand
+6.9cent/user @Mark Enterprise
+
+Monthly avg per user:
+2 Strecken erstellen
+1 Event erstellen
+10 Events betrachten
+
+=~ 35 Requests/user/monat @Mark
+-> 2850 AvgUser = 100.000 requests @Mark
+-> 3500 actualUser * 3.9Cent = 136.50 @Standard
+-> 		   * 6.9Cent = 241.50 @Enterprise
+
+=~ 25 Requests/user/monat @T6
+=~ support 4000 users for basic
+=~ 59.90 Euro. 
+=~ 59.90/2850 = ~2,1Cent/User
+=~ Bluemix 7 Euro
+
+60*3500/1000*2 = 420 Euro
+
+
+Betriebskosten:
+- Bluemix
+- 
+
+22:32 152.3MB/512
+22:50 186.2MB
+22:53 201.3MB
+23:05 213.4MB

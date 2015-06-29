@@ -1,10 +1,9 @@
 ---
 applications:
 - name: tindbike
-  memory: 256M
+  memory: 512M
   instances: 1
   path: .
   command: bundle exec rake db:migrate && bundle exec rails s -p $PORT
 - services:
   - postgres-seic
-  

@@ -2,7 +2,7 @@ class DualConnector
 
   attr_reader :response
 
-  ERROR_DOWN = "We're connectivity issues with our backend, so %{function} was temporarily disabled.<br/> Please try again in a few minutes.".html_safe
+  ERROR_DOWN = "We're experiencing connectivity issues with our backend, so %{function} was temporarily disabled.<br/> Please try again in a few minutes.".html_safe
 
   def initialize
     @connector_mark = ConnectorMark.new
@@ -19,10 +19,10 @@ class DualConnector
     @response = @connector_mark.create_user(user)
     if @response
       return true if @response.status == 201
-      user.errors_backend << { text: ERROR_DOWN % { function: "registration" } } if @response.status == 404
+      user.errors_backend << { text: (ERROR_DOWN % { function: "registration" }).html_safe } if @response.status == 404
       false
     else
-      user.errors_backend << { text: ERROR_DOWN % { function: "registration" } }
+      user.errors_backend << { text: (ERROR_DOWN % { function: "registration" }).html_safe }
       false
     end
   end
@@ -31,19 +31,19 @@ class DualConnector
     @response = @connector_mark.update_user(username, old_user, new_user)
     if @response
       return true if @response.status == 200
-      user.errors_backend << { text: ERROR_DOWN % { function: "updating users" } } if @response.status == 404
+      user.errors_backend << { text: (ERROR_DOWN % { function: "updating users" }).html_safe } if @response.status == 404
       false
     else
-      user.errors_backend << { text: ERROR_DOWN % { function: "updating users" } }
+      user.errors_backend << { text: (ERROR_DOWN % { function: "updating users" }).html_safe }
       false
     end
   end
 
   def get_all_tracks
     tracks_mark_response = @connector_mark.get_all_tracks
-    tracks_mark = TracksDeserializerMark.deserialize_all(tracks_mark_response.body) if tracks_mark_response
+    tracks_mark = TracksDeserializerMark.deserialize_all(tracks_mark_response.body) if tracks_mark_response and tracks_mark_response.status == 200
     tracks_team6_response = @connector_team6.get_all_tracks
-    tracks_team6 = TracksDeserializerTeam6.deserialize_all(tracks_team6_response.body) if tracks_team6_response
+    tracks_team6 = TracksDeserializerTeam6.deserialize_all(tracks_team6_response.body) if tracks_team6_response and tracks_team6_response.status == 200
     (tracks_mark or []) + (tracks_team6 or []) + Track.all
   end
 

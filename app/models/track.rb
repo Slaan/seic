@@ -3,6 +3,7 @@ class Track < ActiveRecord::Base
   belongs_to :user
 
   def self.build_from_hash(params = nil)
+    p params
     track = new
     if params
       track.name = params["name"]

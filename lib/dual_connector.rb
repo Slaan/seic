@@ -76,10 +76,11 @@ class DualConnector
   def move_tracks_to_backend
     while track = Track.first
       index = 1
+      original_name = track.name
       loop do
         @response = @connector_mark.connection(user: track.user)
                    .create_track(track)
-        track.name = track.name + index.to_s
+        track.name = original_name + index.to_s
         index += 1
         break unless @response && name_conflict(@response)
       end

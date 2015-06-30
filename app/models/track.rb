@@ -3,17 +3,13 @@ class Track < ActiveRecord::Base
   belongs_to :user
 
   def self.build_from_hash(params = nil)
-    p params
     track = new
-    p track.tags
     if params
       track.name = params["name"]
       track.description = params["description"]
       track.waypoints = params["waypoints"]
       track.tags = params["keywords"]
-      p params["keywords"]
     end
-    p track.tags
     track
   end
 

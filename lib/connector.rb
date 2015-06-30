@@ -34,7 +34,7 @@ module Connector
       request.params = params if (params and request)
     end
     p "Performing get on: #{self.class::API_URL}/#{path}"
-    p "With Parameters: #{request.params}" if params
+    p "With Parameters: #{params}" if params
     p "Get response: #{response.body}" if response
     check_up?(response)
   end
@@ -46,7 +46,7 @@ module Connector
       request.body = JSON.generate(params) if params.kind_of? Hash and request
       request.body = params.to_json if params.kind_of? ActiveRecord::Base and request
       p "Performing post on: #{self.class::API_URL}/#{path}"
-      p "Posting body: #{request.body}"
+      p "Posting body: #{request.body}" if request
     end
     p "Post response: #{response.body}" if response
     check_up?(response)
@@ -58,7 +58,7 @@ module Connector
     response = @connection.put(path) do |request|
       request.body = JSON.generate(params) if (params and request)
       p "Performing put on: #{self.class::API_URL}/#{path}"
-      p "Put body: #{request.body}"
+      p "Put body: #{request.body}" if request
     end
     p "Put response: #{response.body}" if response
     check_up?(response)

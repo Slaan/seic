@@ -33,6 +33,9 @@ module Connector
     response = @connection.get(path) do |request|
       request.params = params if (params and request)
     end
+    p "Performing get on: #{self.class::API_URL}/#{path}"
+    p "With Parameters: #{request.params}" if params
+    p "Get response: #{response.body}" if response
     check_up?(response)
   end
 
@@ -40,10 +43,12 @@ module Connector
   def post(path, params = nil)
     return unless try_connection?
     response = @connection.post(path) do |request|
-      request.body = JSON.generate(params) if params.kind_of? Hash
-      request.body = params.to_json if params.kind_of? ActiveRecord::Base
+      request.body = JSON.generate(params) if params.kind_of? Hash and request
+      request.body = params.to_json if params.kind_of? ActiveRecord::Base and request
+      p "Performing post on: #{self.class::API_URL}/#{path}"
       p "Posting body: #{request.body}"
     end
+    p "Post response: #{response.body}" if response
     check_up?(response)
   end
 
@@ -51,15 +56,19 @@ module Connector
   def put(path, params = nil)
     return unless try_connection?
     response = @connection.put(path) do |request|
-      request.body = JSON.generate(params) if params
+      request.body = JSON.generate(params) if (params and request)
+      p "Performing put on: #{self.class::API_URL}/#{path}"
       p "Put body: #{request.body}"
     end
+    p "Put response: #{response.body}" if response
     check_up?(response)
   end
 
   def delete(path)
     return unless try_connection?
     response = @connection.delete(path)
+    p "Performing delete on: #{self.class::API_URL}/#{path}"
+    p "delete response: #{response.body}" if response
     check_up?(response)
   end
 

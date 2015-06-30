@@ -1,0 +1,101 @@
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css"/>
+<link rel="stylesheet" href="/assets/stylesheets/leaflet.css"/>
+<link rel="stylesheet" href="/leaflet-routing-machine-2.3.0/leaflet-routing-machine.css"/>
+
+
+<div id="map-side" class="row col-md-12">
+  <div class="panel panel-default">
+    <div class="panel-heading">Track</div>
+    <div class="panel-body">
+      <div class="col-md-3 col-md-offset-0" >
+        <label for="name">Name</label>
+        <p id="name"><%= @track.name %></p>
+        <label for="description">Description</label>
+        <p id="description"><%= @track.description %></p>
+        <label for="keywords">Tags</label>
+        <p id="description"><%= @track.tags.join(", ") %></p>
+      </div>
+      <div id="map"></div>
+    </div>
+  </div>
+
+
+  <style>
+    div#map {
+      float: left;
+      height: 550px;
+      width: 720px;
+    }
+  </style>
+
+
+<%= content_tag "div", id: "track", data: {track: @track} do %>
+<% end %>
+
+  <script type="application/javascript">
+
+
+    // initial view = Hamburg
+    var map = L.map('map').setView([53.5502099, 9.9993636], 9);
+
+
+   L.Icon.Default.imagePath = "https://s3.eu-central-1.amazonaws.com/seic-storage/public/images"
+
+
+    // Intitialize total distance of route
+    var lengthInKm;
+
+    // Get map itself
+    // http://{s}.tiles.mapbox.com/v3/MapID/{z}/{x}/{y}.png
+    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> ' +
+      'contributors, ' + '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+      'Imagery <a href="http://mapbox.com">Mapbox</a>',
+      maxZoom: 18
+    }).addTo(map);
+
+    // Add basic routing control
+    var control = L.Routing.control({
+      routeWhileDragging: true,
+      geocoder: L.Control.Geocoder.nominatim(),
+      fitSelectedRoutes: 'truthy',
+      // Set GraphHopper as router -- IMPORTANT: Only 500 queries per day for free...!
+      router: L.Routing.graphHopper('0a9d51e1-9fa5-4570-99f6-c1c15b4ef542', {"urlParameters": {'vehicle': "bike"}})
+    });
+
+    control.addTo(map);
+
+    // Get distance from map, convert to km
+    control.addEventListener("routesfound", function (route) {
+      lengthInKm = route.routes[0].summary.totalDistance / 1000;
+    });
+
+
+   function loadTrack() {
+     if ($('#track').data('track') != null) {
+        var waypoints = $('#track').data("track").waypoints;
+        var arrayWaypoints = [];
+
+        var cordinates = JSON.parse(waypoints).features;
+
+        cordinates.forEach(function(d){
+          var currentLng =  d.geometry.coordinates[0];
+          var currentLat =  d.geometry.coordinates[1];
+          arrayWaypoints.push(L.latLng(currentLat, currentLng));
+        });
+
+        // Add cordinates to map
+        console.log(arrayWaypoints);
+        control.setWaypoints(arrayWaypoints);
+     }
+   }
+
+   $(document).ready (
+       loadTrack
+   );
+
+
+  </script>
+
+
+</div>

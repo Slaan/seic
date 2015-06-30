@@ -11,31 +11,25 @@
 
       <div class="panel-footer text-center">
         <% if @event.is_member? current_user.id %>
-            <%= link_to 'Leave event', leave_event_path(event_id: @event.id), class: "btn btn-warning" %>
+          <%= link_to 'Leave event', leave_event_path(event_id: @event.id), class: "btn btn-warning" %>
         <% else %>
-            <%= link_to 'Join event', join_event_path(event_id: @event.id), class: "btn btn-success" %>
+          <%= link_to 'Join event', join_event_path(event_id: @event.id), class: "btn btn-success" %>
         <% end %>
       </div>
     </div>
   </div>
   <div class="col-md-9">
-    <div class="panel panel-default">
+    <div class="panel panel-default">x
       <div class="panel-heading">Details</div>
       <div class="panel-body">
         <%= @event.details %>
       </div>
     </div>
   </div>
-  <% if @event.track %>
-  <div class="col-md-9">
-    <div class="panel panel-default">
-      <div class="panel-heading">Track</div>
-      <div class="panel-body">
-        <p><%= @event.track %></p>
-        <%= link_to 'Show track', track_path(track: @event.track), class: "btn btn-success" %>
-      </div>
+  <% if @event.track and @track %>
+    <div class="col-md-9">
+      <%= render 'map' %>
     </div>
-  </div>
   <% end %>
 </div>
 

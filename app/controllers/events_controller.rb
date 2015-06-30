@@ -17,7 +17,11 @@ class EventsController < ApplicationController
   end
 
   def show
-    get_tracks
+    @track = CONNECTOR.connection(user: current_user).get_track(@event.track)
+    unless @track
+      get_tracks
+      @track = @tracks.find { |track| track.name == @event.track }
+    end
   end
 
   def get_tracks

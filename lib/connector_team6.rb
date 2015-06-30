@@ -1,9 +1,9 @@
 class ConnectorTeam6
-  API_URL = 'https://trackyourtracks.mybluemix.net/api/tyt/'
+  API_URL = 'https://trackyourtracks.mybluemix.net/api/tyt'
 
   COMMUNITY_NAME = 'tindbike_dev'
   COMMUNITY_PASSWORD = '1QfO9TWEpXbwPJIKOQPq'
-  COMMUNITY_TOKEN = ''
+  COMMUNITY_TOKEN = '7622838d524d4970a5326c8f6d9952c8'
 
   attr_accessor :community_token
 
@@ -14,7 +14,7 @@ class ConnectorTeam6
       @connection = connection
     else
       @connection = setup_community_connection
-      Rails.application.config.team6_token = create_community_token.body["apiToken"]
+      Rails.application.config.team6_token = COMMUNITY_TOKEN || create_community_token.body["apiToken"]
       @connection = setup_community_connection
     end
   end
@@ -38,7 +38,7 @@ class ConnectorTeam6
     end
 
     def get_all_tracks
-      find_tracks_longer_than(0)
+      find_tracks_longer_than(1)
     end
 
     def find_tracks_longer_than(length)
